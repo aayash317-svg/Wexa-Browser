@@ -7,3 +7,10 @@ httpx>=0.27.0
 # On Windows, install prebuilt wheels: pip install llama-cpp-python
 llama-cpp-python>=0.2.70; sys_platform != "win32" or python_version >= "3.10"
 pytest>=8.0.0
+# Dataset processing & evaluation dependencies
+datasets>=2.14.0
+huggingface_hub>=0.20.0
+pyarrow>=14.0.0
+browsergym-core>=0.14.0
+browsergym-miniwob>=0.14.0
+gymnasium>=0.28.0

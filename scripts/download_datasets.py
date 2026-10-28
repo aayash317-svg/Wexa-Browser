@@ -25,6 +25,9 @@ from typing import Dict, Any, List
 from huggingface_hub import hf_hub_download
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
+
 DATA_DIR = BASE_DIR / "data"
 DATASETS_DIR = DATA_DIR / "datasets"
 
@@ -45,13 +48,14 @@ def download_url(url: str, dest_path: Path, timeout: int = 60) -> int:
 
 
 def step_01_the_stack() -> Dict[str, Any]:
-    print("\n[1/10] Installing The Stack (bigcode/the-stack-smol)...")
+    print("\n[1/10] Installing The Stack (bigcode/the-stack-smol-xs)...")
     target_dir = DATASETS_DIR / "01_the_stack"
     target_dir.mkdir(parents=True, exist_ok=True)
     
     files_to_download = [
         ("data/python/data.json", "stack_python_smol.json"),
         ("data/javascript/data.json", "stack_javascript_smol.json"),
+        ("data/html/data.json", "stack_html_smol.json"),
     ]
     
     total_bytes = 0
@@ -62,7 +66,7 @@ def step_01_the_stack() -> Dict[str, Any]:
         if not dest_file.exists():
             print(f"  Downloading {repo_file} from Hugging Face...")
             cached_path = hf_hub_download(
-                repo_id="bigcode/the-stack-smol",
+                repo_id="bigcode/the-stack-smol-xs",
                 filename=repo_file,
                 repo_type="dataset"
             )
@@ -70,12 +74,12 @@ def step_01_the_stack() -> Dict[str, Any]:
         size = dest_file.stat().st_size
         total_bytes += size
         downloaded_files.append({"file": local_name, "size_bytes": size})
-        print(f"  -> {local_name}: {size / (1024*1024):.2f} MB")
+        print(f"  -> {local_name}: {size / 1024:.1f} KB")
 
-    readme = """# The Stack (bigcode/the-stack-smol)
-- **Source**: Hugging Face (bigcode/the-stack-smol)
+    readme = """# The Stack (bigcode/the-stack)
+- **Source**: Hugging Face (bigcode/the-stack-smol-xs / bigcode/the-stack)
 - **License**: Various permissive open-source licenses (BigCode project)
-- **Content**: Permissively licensed source code across multiple languages (Python, JavaScript).
+- **Content**: Permissively licensed source code across multiple languages (Python, JavaScript, HTML).
 - **Purpose**: Pre-training and fine-tuning for code generation, understanding syntax, and programming idioms.
 """
     (target_dir / "README.md").write_text(readme, encoding="utf-8")

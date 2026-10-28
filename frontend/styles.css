@@ -174,11 +174,23 @@ body.wexa-app {
   outline: none;
 }
 
-.star-btn, .share-btn {
+.star-btn, .share-btn, .nav-go-btn {
   background: transparent;
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.nav-go-btn {
+  color: var(--accent-glow);
+  font-weight: bold;
+}
+
+.nav-go-btn:hover {
+  background: var(--primary-blue);
+  color: #fff;
 }
 
 .w-avatar {

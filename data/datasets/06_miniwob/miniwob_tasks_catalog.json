@@ -1,0 +1,877 @@
+[
+  {
+    "env_id": "browsergym/miniwob.ascending-numbers",
+    "task_name": "ascending-numbers",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.bisect-angle",
+    "task_name": "bisect-angle",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.book-flight",
+    "task_name": "book-flight",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.book-flight-nodelay",
+    "task_name": "book-flight-nodelay",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.buy-ticket",
+    "task_name": "buy-ticket",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.choose-date",
+    "task_name": "choose-date",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.choose-date-easy",
+    "task_name": "choose-date-easy",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.choose-date-medium",
+    "task_name": "choose-date-medium",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.choose-date-nodelay",
+    "task_name": "choose-date-nodelay",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.choose-list",
+    "task_name": "choose-list",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.circle-center",
+    "task_name": "circle-center",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-button",
+    "task_name": "click-button",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-button-sequence",
+    "task_name": "click-button-sequence",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-checkboxes",
+    "task_name": "click-checkboxes",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-checkboxes-large",
+    "task_name": "click-checkboxes-large",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-checkboxes-soft",
+    "task_name": "click-checkboxes-soft",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-checkboxes-transfer",
+    "task_name": "click-checkboxes-transfer",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-collapsible",
+    "task_name": "click-collapsible",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-collapsible-2",
+    "task_name": "click-collapsible-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-collapsible-2-nodelay",
+    "task_name": "click-collapsible-2-nodelay",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-collapsible-nodelay",
+    "task_name": "click-collapsible-nodelay",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-color",
+    "task_name": "click-color",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-dialog",
+    "task_name": "click-dialog",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-dialog-2",
+    "task_name": "click-dialog-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-link",
+    "task_name": "click-link",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-menu",
+    "task_name": "click-menu",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-menu-2",
+    "task_name": "click-menu-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-option",
+    "task_name": "click-option",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-pie",
+    "task_name": "click-pie",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-pie-nodelay",
+    "task_name": "click-pie-nodelay",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-scroll-list",
+    "task_name": "click-scroll-list",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-shades",
+    "task_name": "click-shades",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-shape",
+    "task_name": "click-shape",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-tab",
+    "task_name": "click-tab",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-tab-2",
+    "task_name": "click-tab-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-tab-2-easy",
+    "task_name": "click-tab-2-easy",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-tab-2-hard",
+    "task_name": "click-tab-2-hard",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-tab-2-medium",
+    "task_name": "click-tab-2-medium",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-test",
+    "task_name": "click-test",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-test-2",
+    "task_name": "click-test-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-test-transfer",
+    "task_name": "click-test-transfer",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.click-widget",
+    "task_name": "click-widget",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.copy-paste",
+    "task_name": "copy-paste",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.copy-paste-2",
+    "task_name": "copy-paste-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.count-shape",
+    "task_name": "count-shape",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.count-sides",
+    "task_name": "count-sides",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.daily-calendar",
+    "task_name": "daily-calendar",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-box",
+    "task_name": "drag-box",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-circle",
+    "task_name": "drag-circle",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-cube",
+    "task_name": "drag-cube",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-items",
+    "task_name": "drag-items",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-items-grid",
+    "task_name": "drag-items-grid",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-shapes",
+    "task_name": "drag-shapes",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-shapes-2",
+    "task_name": "drag-shapes-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-single-shape",
+    "task_name": "drag-single-shape",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.drag-sort-numbers",
+    "task_name": "drag-sort-numbers",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.draw-circle",
+    "task_name": "draw-circle",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.draw-line",
+    "task_name": "draw-line",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox",
+    "task_name": "email-inbox",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-delete",
+    "task_name": "email-inbox-delete",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-forward",
+    "task_name": "email-inbox-forward",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-forward-nl",
+    "task_name": "email-inbox-forward-nl",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-forward-nl-turk",
+    "task_name": "email-inbox-forward-nl-turk",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-important",
+    "task_name": "email-inbox-important",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-nl-turk",
+    "task_name": "email-inbox-nl-turk",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-noscroll",
+    "task_name": "email-inbox-noscroll",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-reply",
+    "task_name": "email-inbox-reply",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.email-inbox-star-reply",
+    "task_name": "email-inbox-star-reply",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.enter-date",
+    "task_name": "enter-date",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.enter-password",
+    "task_name": "enter-password",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.enter-text",
+    "task_name": "enter-text",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.enter-text-2",
+    "task_name": "enter-text-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.enter-text-dynamic",
+    "task_name": "enter-text-dynamic",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.enter-time",
+    "task_name": "enter-time",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.find-greatest",
+    "task_name": "find-greatest",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.find-midpoint",
+    "task_name": "find-midpoint",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.find-word",
+    "task_name": "find-word",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.focus-text",
+    "task_name": "focus-text",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.focus-text-2",
+    "task_name": "focus-text-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.form-sequence",
+    "task_name": "form-sequence",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.form-sequence-2",
+    "task_name": "form-sequence-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.form-sequence-3",
+    "task_name": "form-sequence-3",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.generate-number",
+    "task_name": "generate-number",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.grid-coordinate",
+    "task_name": "grid-coordinate",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.guess-number",
+    "task_name": "guess-number",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.highlight-text",
+    "task_name": "highlight-text",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.highlight-text-2",
+    "task_name": "highlight-text-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.hot-cold",
+    "task_name": "hot-cold",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.identify-shape",
+    "task_name": "identify-shape",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.login-user",
+    "task_name": "login-user",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.login-user-popup",
+    "task_name": "login-user-popup",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.multi-layouts",
+    "task_name": "multi-layouts",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.multi-orderings",
+    "task_name": "multi-orderings",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.navigate-tree",
+    "task_name": "navigate-tree",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.number-checkboxes",
+    "task_name": "number-checkboxes",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.odd-or-even",
+    "task_name": "odd-or-even",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.order-food",
+    "task_name": "order-food",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.phone-book",
+    "task_name": "phone-book",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.read-table",
+    "task_name": "read-table",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.read-table-2",
+    "task_name": "read-table-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.resize-textarea",
+    "task_name": "resize-textarea",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.right-angle",
+    "task_name": "right-angle",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.scroll-text",
+    "task_name": "scroll-text",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.scroll-text-2",
+    "task_name": "scroll-text-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.search-engine",
+    "task_name": "search-engine",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.sign-agreement",
+    "task_name": "sign-agreement",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.simple-algebra",
+    "task_name": "simple-algebra",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.simple-arithmetic",
+    "task_name": "simple-arithmetic",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.social-media",
+    "task_name": "social-media",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.social-media-all",
+    "task_name": "social-media-all",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.social-media-some",
+    "task_name": "social-media-some",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.stock-market",
+    "task_name": "stock-market",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.terminal",
+    "task_name": "terminal",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.text-editor",
+    "task_name": "text-editor",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.text-transform",
+    "task_name": "text-transform",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.tic-tac-toe",
+    "task_name": "tic-tac-toe",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.unicode-test",
+    "task_name": "unicode-test",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.use-autocomplete",
+    "task_name": "use-autocomplete",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.use-autocomplete-nodelay",
+    "task_name": "use-autocomplete-nodelay",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.use-colorwheel",
+    "task_name": "use-colorwheel",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.use-colorwheel-2",
+    "task_name": "use-colorwheel-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.use-slider",
+    "task_name": "use-slider",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.use-slider-2",
+    "task_name": "use-slider-2",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.use-spinner",
+    "task_name": "use-spinner",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  },
+  {
+    "env_id": "browsergym/miniwob.visual-addition",
+    "task_name": "visual-addition",
+    "category": "browser_interaction",
+    "observation_type": "html_and_accessibility_tree",
+    "action_space": "mouse_and_keyboard"
+  }
+]

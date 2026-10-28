@@ -1,0 +1,52 @@
+{
+  "framework": "browsergym",
+  "version": "0.14.3",
+  "action_spaces": [
+    {
+      "action": "click(bid)",
+      "description": "Click an element identified by browser element ID (bid)"
+    },
+    {
+      "action": "fill(bid, value)",
+      "description": "Fill a text field or input with the provided value"
+    },
+    {
+      "action": "hover(bid)",
+      "description": "Hover mouse cursor over element"
+    },
+    {
+      "action": "press(key_comb)",
+      "description": "Press a key combination (e.g. Enter, Control+A, Backspace)"
+    },
+    {
+      "action": "scroll(direction, pixels)",
+      "description": "Scroll page vertically or horizontally"
+    },
+    {
+      "action": "execute_javascript(code)",
+      "description": "Execute JavaScript snippet in browser page context"
+    },
+    {
+      "action": "send_msg_to_user(text)",
+      "description": "Communicate directly with human user"
+    },
+    {
+      "action": "noop()",
+      "description": "No-operation, wait for async page updates"
+    }
+  ],
+  "observation_components": [
+    "accessibility_tree (AXTree)",
+    "dom_snapshot",
+    "active_page_url",
+    "open_tabs",
+    "focused_element",
+    "screenshot"
+  ],
+  "supported_benchmarks": [
+    "miniwob",
+    "webarena",
+    "workarena",
+    "weblinx"
+  ]
+}

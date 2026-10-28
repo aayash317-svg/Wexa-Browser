@@ -1,0 +1,203 @@
+{
+  "project": "Wexa Browser",
+  "total_datasets": 10,
+  "dataset_root": "D:\\Wexa Browser\\data\\datasets",
+  "datasets": [
+    {
+      "name": "The Stack",
+      "folder": "01_the_stack",
+      "source": "https://huggingface.co/datasets/bigcode/the-stack",
+      "license": "Permissive Open Source (BigCode)",
+      "files": [
+        {
+          "file": "stack_python_smol.json",
+          "size_bytes": 967268
+        },
+        {
+          "file": "stack_javascript_smol.json",
+          "size_bytes": 1862547
+        },
+        {
+          "file": "stack_html_smol.json",
+          "size_bytes": 2624769
+        }
+      ],
+      "total_bytes": 5454584,
+      "status": "ready"
+    },
+    {
+      "name": "CodeSearchNet",
+      "folder": "02_codesearchnet",
+      "source": "https://github.com/github/CodeSearchNet",
+      "license": "Various Open Source",
+      "files": [
+        {
+          "file": "codesearchnet_python_test.parquet",
+          "size_bytes": 28744352
+        },
+        {
+          "file": "codesearchnet_python_val.parquet",
+          "size_bytes": 30742555
+        }
+      ],
+      "total_bytes": 59486907,
+      "status": "ready"
+    },
+    {
+      "name": "MBPP",
+      "folder": "03_mbpp",
+      "source": "https://github.com/google-research/google-research/tree/master/mbpp",
+      "license": "CC-BY-4.0",
+      "records": 974,
+      "files": [
+        {
+          "file": "mbpp.jsonl",
+          "size_bytes": 563743
+        }
+      ],
+      "total_bytes": 563743,
+      "status": "ready"
+    },
+    {
+      "name": "HumanEval",
+      "folder": "04_humaneval",
+      "source": "https://github.com/openai/human-eval",
+      "license": "MIT",
+      "records": 164,
+      "files": [
+        {
+          "file": "HumanEval.jsonl",
+          "size_bytes": 214438
+        }
+      ],
+      "total_bytes": 214438,
+      "status": "ready"
+    },
+    {
+      "name": "SWE-bench",
+      "folder": "05_swe_bench",
+      "source": "https://github.com/SWE-bench/SWE-bench",
+      "license": "MIT",
+      "files": [
+        {
+          "file": "swe_bench_lite_dev.parquet",
+          "size_bytes": 119551
+        },
+        {
+          "file": "swe_bench_lite_test.parquet",
+          "size_bytes": 1119540
+        }
+      ],
+      "total_bytes": 1239091,
+      "status": "ready"
+    },
+    {
+      "name": "MiniWoB++",
+      "folder": "06_miniwob",
+      "source": "https://github.com/Farama-Foundation/miniwob-plusplus",
+      "license": "MIT",
+      "records": 125,
+      "files": [
+        {
+          "file": "miniwob_tasks_catalog.json",
+          "size_bytes": 29650
+        }
+      ],
+      "total_bytes": 29650,
+      "status": "ready"
+    },
+    {
+      "name": "WebArena",
+      "folder": "07_webarena",
+      "source": "https://github.com/web-arena-x/webarena",
+      "license": "Apache-2.0",
+      "records": 812,
+      "files": [
+        {
+          "file": "test.raw.json",
+          "size_bytes": 880776
+        }
+      ],
+      "total_bytes": 880776,
+      "status": "ready"
+    },
+    {
+      "name": "BrowserGym",
+      "folder": "08_browsergym",
+      "source": "https://github.com/ServiceNow/BrowserGym",
+      "license": "Apache-2.0",
+      "files": [
+        {
+          "file": "action_space_schema.json",
+          "size_bytes": 1338
+        }
+      ],
+      "total_bytes": 1338,
+      "status": "ready"
+    },
+    {
+      "name": "Spider",
+      "folder": "09_spider",
+      "source": "https://github.com/taoyds/spider",
+      "license": "CC-BY-SA-4.0",
+      "files": [
+        {
+          "file": "spider_train.parquet",
+          "size_bytes": 831359
+        },
+        {
+          "file": "spider_validation.parquet",
+          "size_bytes": 125887
+        }
+      ],
+      "total_bytes": 957246,
+      "status": "ready"
+    },
+    {
+      "name": "Wexa Custom Dataset",
+      "folder": "10_wexa_custom",
+      "source": "Wexa Browser Project",
+      "license": "Internal Project",
+      "records": 27,
+      "files": [
+        {
+          "file": "page_understanding.jsonl",
+          "records": 5,
+          "size_bytes": 4617
+        },
+        {
+          "file": "editor_detection.jsonl",
+          "records": 6,
+          "size_bytes": 2565
+        },
+        {
+          "file": "permissions_and_safety.jsonl",
+          "records": 4,
+          "size_bytes": 2056
+        },
+        {
+          "file": "code_insertion.jsonl",
+          "records": 3,
+          "size_bytes": 2378
+        },
+        {
+          "file": "recovery.jsonl",
+          "records": 4,
+          "size_bytes": 1343
+        },
+        {
+          "file": "wexa_train.jsonl",
+          "records": 4,
+          "size_bytes": 4945
+        },
+        {
+          "file": "wexa_eval.jsonl",
+          "records": 1,
+          "size_bytes": 942
+        }
+      ],
+      "total_bytes": 18846,
+      "status": "ready"
+    }
+  ]
+}
