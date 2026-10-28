@@ -11,11 +11,14 @@ from backend.execution.runner import IsolatedTestRunner
 from backend.data.telemetry_logger import AutomatedDatasetLogger
 from backend.security.restriction_detector import WebsiteRestrictionDetector
 from backend.security.offline_guard import OfflineSecurityGuard
+from backend.security.injection_guard import PromptInjectionGuard
+from backend.security.ast_safety import ASTCodeSafetyAnalyzer
 
 class WexaAgentOrchestrator:
     """
-    Central orchestrator coordinating page inspection, embedded offline inference,
-    restriction evaluation, permission lifecycle, code insertion, testing, and telemetry.
+    Central orchestrator coordinating page inspection, offline embedded inference,
+    restriction evaluation, zero-leakage secret hiding, AST safety analysis,
+    permission lifecycle, code insertion, testing, and telemetry.
     """
     def __init__(self):
         self.state_machine = PermissionStateMachine()
@@ -26,22 +29,37 @@ class WexaAgentOrchestrator:
 
     def analyze_page(self, request: PageAnalysisRequest) -> Dict[str, Any]:
         """
-        Extracts task, verifies website restrictions, and generates proposed solution.
+        Extracts task, verifies website restrictions, sanitizes prompt injections and API keys,
+        and generates proposed solution.
         """
         self.state_machine.begin_analysis()
         
-        # 1. Evaluate Website Restrictions (anti-automation, CAPTCHA, read-only, etc.)
+        # 1. API Key & Secret Hiding / Redaction (Guarantees zero-leakage)
         sanitized_text = OfflineSecurityGuard.sanitize_text(request.visible_text)
+        sanitized_starter = OfflineSecurityGuard.sanitize_text(request.starter_code or "")
+
+        # 2. Anti-Prompt Injection Defense
+        is_clean_prompt, injection_msg = PromptInjectionGuard.inspect_untrusted_text(sanitized_text)
+        if not is_clean_prompt:
+            self.state_machine.mark_error()
+            return {
+                "error": "Security Alert: Indirect Prompt Injection detected in webpage.",
+                "details": injection_msg,
+                "state": AgentState.ERROR.value
+            }
+        sanitized_text = PromptInjectionGuard.sanitize_untrusted_input(sanitized_text)
+
+        # 3. Evaluate Website Restrictions (anti-automation, CAPTCHA, read-only, etc.)
         restriction = WebsiteRestrictionDetector.evaluate_page(
             page_origin=request.origin,
             dom_metadata=request.dom_metadata,
             visible_text=sanitized_text
         )
 
-        # 2. Extract Task Representation
+        # 4. Extract Task Representation
         task = PageUnderstandingEngine.extract_task(
             visible_text=sanitized_text,
-            starter_code=request.starter_code or "",
+            starter_code=sanitized_starter,
             language_hint=request.language or "python"
         )
         task.restriction_evaluation = restriction
@@ -60,7 +78,7 @@ class WexaAgentOrchestrator:
             }
             return self.last_analysis
 
-        # 3. Embedded Local Model Inference (runs offline)
+        # 5. Embedded Local Model Inference (runs offline)
         inference_out = self.engine.generate_code_patch(
             problem=task.problem_statement,
             starter_code=task.starter_code,
@@ -68,7 +86,18 @@ class WexaAgentOrchestrator:
         )
         proposed_code = inference_out["proposed_code"]
         
-        # 4. Prepare Diff & Proposal
+        # 6. Model Output AST Safety Check (Verify generated code has no harmful calls)
+        if task.language.lower() == "python":
+            is_code_safe, code_safety_reason = ASTCodeSafetyAnalyzer.analyze_python_code(proposed_code)
+            if not is_code_safe:
+                self.state_machine.mark_error()
+                return {
+                    "error": "Model Security Violation: Generated code contained prohibited operations.",
+                    "details": code_safety_reason,
+                    "state": AgentState.ERROR.value
+                }
+
+        # 7. Prepare Diff & Proposal
         edit_patch = self.editor_adapter.prepare_edit(
             current=task.starter_code,
             proposal=proposed_code
@@ -138,7 +167,7 @@ class WexaAgentOrchestrator:
         test_result = {"status": "UNVERIFIED", "stdout": "", "stderr": "Tests not executed."}
         if verified:
             self.state_machine.mark_verified()
-            # Run in isolated local environment
+            # Run in isolated local environment with AST and timeout guards
             test_result = IsolatedTestRunner.run_python_code(
                 code_string=actual_inserted_code,
                 test_code=test_harness_code

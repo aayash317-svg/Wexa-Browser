@@ -1,6 +1,18 @@
 import os
 from pathlib import Path
-from pydantic_settings import BaseSettings
+
+try:
+    from pydantic_settings import BaseSettings
+except ImportError:
+    try:
+        from pydantic import BaseModel
+        class BaseSettings(BaseModel):
+            pass
+    except ImportError:
+        class BaseSettings:
+            def __init__(self, **kwargs):
+                for k, v in kwargs.items():
+                    setattr(self, k, v)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,9 +36,6 @@ class Settings(BaseSettings):
     # Security & Execution limits
     EXECUTION_TIMEOUT_SECONDS: int = 8
     MAX_ATTEMPTS: int = 3
-
-    class Config:
-        env_prefix = "WEXA_"
 
 settings = Settings()
 

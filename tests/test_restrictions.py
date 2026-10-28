@@ -57,4 +57,4 @@ def test_offline_guard_sanitizes_credentials():
     clean_text = OfflineSecurityGuard.sanitize_text(dirty_text)
     assert "SecretPassword123" not in clean_text
     assert "Bearer eyJhb" not in clean_text
-    assert "[REDACTED_SECRET]" in clean_text
+    assert "[REDACTED_KEY_OR_SECRET]" in clean_text
