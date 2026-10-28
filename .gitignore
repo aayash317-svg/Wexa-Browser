@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+
+# Models & Large Datasets (Keep manifests and samples, exclude giant checkpoints)
+models/*.gguf
+models/*_checkpoint/
+
+# Node / Frontend
+node_modules/
+.npm/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

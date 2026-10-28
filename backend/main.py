@@ -1,0 +1,115 @@
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import Optional, Dict, Any
+from pathlib import Path
+
+from backend.config import settings
+from backend.schemas.task import PageAnalysisRequest
+from backend.agent.orchestrator import WexaAgentOrchestrator
+
+app = FastAPI(
+    title=settings.APP_NAME,
+    description="Local-first page-aware AI coding orchestrator with embedded inference and automated training telemetry.",
+    version="0.1.0"
+)
+
+# Allow local Electron / webview requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+orchestrator = WexaAgentOrchestrator()
+
+
+class ApprovalRequest(BaseModel):
+    proposal_id: str
+    origin: str
+    user_approved: bool
+
+
+class VerifyTestRequest(BaseModel):
+    actual_editor_content: str
+    test_harness_code: Optional[str] = None
+
+
+@app.get("/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "app": settings.APP_NAME,
+        "engine_ready": orchestrator.engine.is_ready,
+        "model_file": str(orchestrator.engine.model_path),
+        "agent_state": orchestrator.state_machine.current_state.value
+    }
+
+
+@app.post("/api/analyze-page")
+def analyze_page(request: PageAnalysisRequest):
+    """
+    Called by the browser side-panel when the user clicks 'Analyse Page'.
+    """
+    try:
+        result = orchestrator.analyze_page(request)
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/approve")
+def handle_approval(payload: ApprovalRequest):
+    """
+    Submits user approval or cancellation for the active proposal.
+    """
+    result = orchestrator.handle_approval(
+        proposal_id=payload.proposal_id,
+        origin=payload.origin,
+        user_approved=payload.user_approved
+    )
+    return result
+
+
+@app.post("/api/verify-and-test")
+def verify_and_test(payload: VerifyTestRequest):
+    """
+    Verifies actual editor state, runs isolated unit tests,
+    and automatically records the sample for model training.
+    """
+    result = orchestrator.verify_and_test(
+        actual_inserted_code=payload.actual_editor_content,
+        test_harness_code=payload.test_harness_code
+    )
+    return result
+
+
+@app.get("/api/datasets/stats")
+def get_dataset_statistics():
+    """
+    Returns counts of automatically collected training samples.
+    """
+    return orchestrator.dataset_logger.get_statistics()
+
+
+@app.post("/api/datasets/export")
+def export_dataset(min_status: str = "PASS"):
+    """
+    Exports collected passing telemetry into an instruction-tuning JSONL file.
+    """
+    export_path = settings.DATASETS_DIR / "wexa_coder_finetune.jsonl"
+    count = orchestrator.dataset_logger.export_to_training_jsonl(
+        output_path=export_path,
+        min_status=min_status
+    )
+    return {
+        "exported_records": count,
+        "export_path": str(export_path)
+    }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.main:app", host=settings.HOST, port=settings.PORT, reload=True)

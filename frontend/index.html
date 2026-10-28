@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wexa Browser — AI-Powered Practice Browser</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="wexa-app">
+
+  <!-- Top Titlebar / Window Controls -->
+  <header class="titlebar">
+    <div class="window-controls">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+    <div class="tab-strip">
+      <div class="tab active">
+        <span class="tab-icon">W</span>
+        <span class="tab-title">WEXA — Two Sum</span>
+        <span class="tab-close">×</span>
+      </div>
+      <button class="new-tab-btn">+</button>
+    </div>
+    <div class="window-actions">
+      <button class="win-btn">—</button>
+      <button class="win-btn">▢</button>
+      <button class="win-btn win-close">✕</button>
+    </div>
+  </header>
+
+  <!-- Browser Navigation Bar -->
+  <nav class="browser-nav">
+    <div class="nav-buttons">
+      <button class="nav-btn" title="Back">←</button>
+      <button class="nav-btn" title="Forward">→</button>
+      <button class="nav-btn" id="reloadBtn" title="Refresh">↻</button>
+    </div>
+    <div class="url-bar-container">
+      <span class="lock-icon">🔒</span>
+      <input type="text" id="urlInput" class="url-input" value="https://leetcode.com/problems/two-sum/" readonly>
+      <button class="star-btn" title="Bookmark">★</button>
+      <button class="share-btn" title="Share">⎘</button>
+    </div>
+    <div class="profile-badge">
+      <div class="w-avatar">W</div>
+    </div>
+  </nav>
+
+  <!-- Main Viewport (Sidebar + Web Content + AI Panel) -->
+  <main class="main-viewport">
+
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo">W</div>
+        <span class="brand-text">WEXA</span>
+      </div>
+
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <span class="icon">⌂</span>
+          <span class="label">Home</span>
+        </li>
+        <li class="nav-item active">
+          <span class="icon">🌐</span>
+          <span class="label">Browser</span>
+        </li>
+        <li class="nav-item">
+          <span class="icon">✨</span>
+          <span class="label">AI Assistant</span>
+        </li>
+        <li class="nav-item">
+          <span class="icon">📥</span>
+          <span class="label">Downloads</span>
+        </li>
+        <li class="nav-item" id="navDatasets">
+          <span class="icon">🗄️</span>
+          <span class="label">Datasets</span>
+        </li>
+        <li class="nav-item">
+          <span class="icon">⚙️</span>
+          <span class="label">Settings</span>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="offline-badge">
+          <span class="status-indicator"></span>
+          <div class="offline-text">
+            <strong>Offline Mode</strong>
+            <span>Model running locally<br>No internet required</span>
+          </div>
+        </div>
+        <div class="version-tag">Wexa Browser v1.0.0</div>
+      </div>
+    </aside>
+
+    <!-- Center Workspace / Webpage & Code Editor -->
+    <section class="workspace">
+      <!-- Problem Details Pane -->
+      <div class="problem-pane">
+        <div class="problem-header">
+          <div class="title-row">
+            <h2>1. Two Sum</h2>
+            <span class="badge medium">Medium</span>
+            <div class="stats">
+              <span>👍 122K</span>
+              <span>💬 5.4K</span>
+            </div>
+          </div>
+          <button class="companies-btn">🏢 Companies</button>
+        </div>
+
+        <div class="problem-body">
+          <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.</p>
+          <p>You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice.</p>
+          <p>You can return the answer in any order.</p>
+
+          <div class="example-card">
+            <strong>Example 1:</strong>
+            <pre><code>Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</code></pre>
+          </div>
+
+          <div class="example-card">
+            <strong>Example 2:</strong>
+            <pre><code>Input: nums = [3,2,4], target = 6
+Output: [1,2]</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Code Editor Pane -->
+      <div class="editor-pane">
+        <div class="editor-header">
+          <select id="langSelect" class="lang-select">
+            <option value="python">Python3</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+          </select>
+          <div class="editor-actions">
+            <button class="run-btn" id="editorRunBtn">▶ Run</button>
+            <button class="submit-btn" id="editorSubmitBtn">☁ Submit</button>
+          </div>
+        </div>
+
+        <div class="editor-container">
+          <div class="line-numbers" id="lineNumbers">
+            1<br>2<br>3<br>4<br>5<br>6<br>7<br>8
+          </div>
+          <textarea id="codeEditor" class="code-textarea" spellcheck="false">class Solution:
+    def twoSum(self, nums: list[int], target: int) -> list[int]:
+        # Write your code here
+        pass</textarea>
+        </div>
+
+        <!-- Testcases Section -->
+        <div class="testcases-tray">
+          <div class="testcases-header">
+            <div class="test-tabs">
+              <button class="test-tab active">Testcase</button>
+              <button class="test-tab">Result</button>
+            </div>
+            <button class="run-all-btn" id="runAllTestsBtn">Run All</button>
+          </div>
+
+          <div class="testcases-list">
+            <div class="testcase-item" id="tc1">
+              <span class="tc-status pending">○</span>
+              <span>Test Case 1: nums = [2,7,11,15], target = 9</span>
+            </div>
+            <div class="testcase-item" id="tc2">
+              <span class="tc-status pending">○</span>
+              <span>Test Case 2: nums = [3,2,4], target = 6</span>
+            </div>
+            <div class="testcase-item" id="tc3">
+              <span class="tc-status pending">○</span>
+              <span>Test Case 3: nums = [3,3], target = 6</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right AI Assistant Side Panel -->
+    <aside class="ai-panel">
+      <div class="ai-header">
+        <div class="ai-title">
+          <span class="sparkle">✨</span>
+          <strong>AI Assistant</strong>
+          <span class="badge beta">Beta</span>
+        </div>
+        <button class="close-panel-btn">✕</button>
+      </div>
+
+      <div class="ai-content" id="aiFeed">
+        <!-- User Query Bubble -->
+        <div class="chat-bubble user">
+          Analyse this page and solve the coding question.
+        </div>
+
+        <!-- Analysis Checklist Card -->
+        <div class="ai-card" id="analysisCard">
+          <ul class="status-checklist">
+            <li class="checked">
+              <span class="check-icon">✓</span>
+              <span>Page Analysis Complete</span>
+            </li>
+            <li class="checked">
+              <span class="check-icon">✓</span>
+              <span>Problem: <strong>Two Sum</strong></span>
+            </li>
+            <li class="checked">
+              <span class="check-icon">✓</span>
+              <span>Language: <strong>Python</strong></span>
+            </li>
+            <li class="checked">
+              <span class="check-icon">✓</span>
+              <span>Editor: <strong>Textarea / Monaco</strong></span>
+            </li>
+            <li class="checked">
+              <span class="check-icon">✓</span>
+              <span>Target: <strong>Complete missing code</strong></span>
+            </li>
+            <li class="checked notice">
+              <span class="check-icon">✓</span>
+              <span>Permission: <strong>Required</strong></span>
+            </li>
+          </ul>
+
+          <div class="callout-box">
+            <span class="info-icon">ℹ</span>
+            <p id="aiCalloutText">I found the coding question on this page. Would you like me to generate the solution and write it in the editor?</p>
+          </div>
+
+          <div class="action-buttons">
+            <button class="primary-btn" id="generateSolutionBtn">
+              <span class="spinner" id="btnSpinner" style="display:none;">◌</span>
+              Generate Solution
+            </button>
+            <button class="secondary-btn" id="viewDetailsBtn">View Details</button>
+          </div>
+        </div>
+
+        <!-- Diff Card (Hidden initially, shown after generation) -->
+        <div class="ai-card diff-card" id="diffCard" style="display:none;">
+          <div class="diff-header">
+            <strong>Proposed Code Solution</strong>
+            <span class="badge diff-badge">Review Diff</span>
+          </div>
+          <pre class="diff-viewer" id="diffViewer"></pre>
+        </div>
+      </div>
+
+      <!-- Bottom Chat Bar & Quick Action Pills -->
+      <div class="ai-footer">
+        <div class="chat-input-bar">
+          <input type="text" id="chatInput" placeholder="Ask me anything...">
+          <button class="send-btn" id="sendBtn">➤</button>
+        </div>
+        <div class="quick-pills">
+          <button class="pill-btn" id="pillAnalyse">⚡ Analyse Page</button>
+          <button class="pill-btn" id="pillInsert">⎘ Insert Code</button>
+          <button class="pill-btn" id="pillTests">▶ Run Tests</button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Bottom Control Deck -->
+  <footer class="bottom-deck">
+    <!-- Card 1: Page Analysis -->
+    <div class="deck-card">
+      <div class="card-header">
+        <span class="icon">📊</span>
+        <strong>Page Analysis</strong>
+        <span class="badge success" id="badgeAnalysisStatus">Done</span>
+      </div>
+      <ul class="card-list">
+        <li><span class="bullet green">✓</span> Page type: Coding Platform</li>
+        <li><span class="bullet green">✓</span> Coding question: Detected</li>
+        <li><span class="bullet green">✓</span> Code editor: Found (Python)</li>
+        <li><span class="bullet green">✓</span> Action status: Ready</li>
+      </ul>
+    </div>
+
+    <!-- Card 2: Permission Control -->
+    <div class="deck-card">
+      <div class="card-header">
+        <span class="icon">🛡️</span>
+        <strong>Permission Control</strong>
+        <span class="badge success" id="badgePermStatus">Allowed</span>
+      </div>
+      <p class="perm-desc" id="permDesc">You can now allow Wexa to edit the code editor.</p>
+      <div class="perm-actions">
+        <button class="perm-btn allow" id="btnAllow">Allow</button>
+        <button class="perm-btn deny" id="btnDeny">Deny</button>
+        <button class="perm-btn later" id="btnLater">Ask Later</button>
+      </div>
+    </div>
+
+    <!-- Card 3: Quick Actions -->
+    <div class="deck-card">
+      <div class="card-header">
+        <span class="icon">⚡</span>
+        <strong>Quick Actions</strong>
+      </div>
+      <div class="action-links">
+        <button class="action-link" id="linkAnalyse">Analyse Current Page <span>›</span></button>
+        <button class="action-link" id="linkFindQuestions">Find Coding Questions <span>›</span></button>
+        <button class="action-link" id="linkDatasets">Open Dataset Manager <span>›</span></button>
+        <button class="action-link" id="linkSettings">Settings <span>›</span></button>
+      </div>
+    </div>
+
+    <!-- Card 4: Brand Card -->
+    <div class="deck-card brand-card">
+      <div class="brand-emblem">
+        <div class="brand-logo-large">W</div>
+        <div class="brand-slogan">
+          <h3>WEXA</h3>
+          <span>BROWSER</span>
+        </div>
+      </div>
+      <p class="brand-motto">Build • Learn • Grow</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
