@@ -10,6 +10,7 @@ from backend.agent.orchestrator import WexaAgentOrchestrator
 from backend.page_parser.page_resolver import PageResolver
 from backend.agent.action_loop import UniversalActionLoop
 from backend.schemas.universal_action import ProposedAction, PageObservation
+from backend.browser.routes import router as browser_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -25,6 +26,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(browser_router)
 
 orchestrator = WexaAgentOrchestrator()
 action_loop = UniversalActionLoop()

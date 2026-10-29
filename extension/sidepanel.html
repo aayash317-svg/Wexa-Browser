@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wexa — Persistent Side Panel</title>
+  <link rel="stylesheet" href="sidepanel.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="wexa-sidepanel">
+
+  <!-- Header -->
+  <header class="panel-header">
+    <div class="header-brand">
+      <div class="brand-badge">W</div>
+      <div class="brand-info">
+        <strong>WEXA SIDE PANEL</strong>
+        <span>100% LOCAL AI</span>
+      </div>
+    </div>
+    <div class="status-pill" id="backendStatusPill">
+      <span class="status-dot"></span>
+      <span id="backendStatusText">CONNECTED</span>
+    </div>
+  </header>
+
+  <!-- Active Page Context Card -->
+  <section class="context-card">
+    <div class="card-caption">ACTIVE BROWSER TAB</div>
+    <div class="page-title-row">
+      <h3 id="panelPageTitle">Loading active tab...</h3>
+      <span class="page-category-badge" id="panelPageCategory">INSPECTING</span>
+    </div>
+    <div class="page-url-row">
+      <span class="url-icon">🔒</span>
+      <span class="url-text" id="panelPageUrl">about:blank</span>
+      <button class="icon-btn" id="btnRefreshObservation" title="Refresh Page Context">↻</button>
+    </div>
+  </section>
+
+  <!-- Main Scrollable Feed -->
+  <main class="panel-feed">
+
+    <!-- Page Analysis & Element Summary -->
+    <div class="feed-card">
+      <div class="card-title">PAGE OBSERVATION</div>
+      <ul class="observation-list" id="panelObsList">
+        <li><span>■</span> Headings: <strong id="statHeadings">0</strong></li>
+        <li><span>■</span> Interactive Elements: <strong id="statElements">0</strong></li>
+        <li><span>■</span> Editor Detected: <strong id="statEditor">None</strong></li>
+        <li><span>■</span> Barriers: <strong id="statBarriers">None</strong></li>
+      </ul>
+      <p class="summary-text" id="panelSummaryText">Awaiting live page inspection...</p>
+    </div>
+
+    <!-- Wexa Intelligence: Next Proposed Action -->
+    <div class="feed-card action-card">
+      <div class="action-card-header">
+        <span class="action-badge">PROPOSED NEXT ACTION</span>
+        <span class="confidence-tag" id="actionConfidence">95% CONFIDENCE</span>
+      </div>
+      <div class="action-body">
+        <strong id="actionHeading">Reasoning on active page...</strong>
+        <p id="actionExplanation">Wexa's local model is analyzing the page structure to identify your goal and plan the next action.</p>
+      </div>
+
+      <div class="action-controls">
+        <button class="primary-action-btn" id="btnExecuteAction">
+          <span>Execute Action</span>
+          <span class="arrow">➔</span>
+        </button>
+        <button class="secondary-action-btn" id="btnRejectAction">Dismiss</button>
+      </div>
+    </div>
+
+    <!-- Live Execution & Verification Log -->
+    <div class="feed-card" id="verificationCard" style="display: none;">
+      <div class="card-title">ACTION VERIFICATION</div>
+      <div class="verification-log" id="verificationLog">
+        Action executed. Verifying updated page state...
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Conversational Input Bar -->
+  <footer class="panel-footer">
+    <div class="input-bar">
+      <input type="text" id="panelChatInput" placeholder="Tell Wexa what to do on this page..." autocomplete="off">
+      <button class="send-btn" id="panelSendBtn">➔</button>
+    </div>
+    <div class="quick-action-tags">
+      <button class="tag-btn" id="tagSolveCode">Solve Code</button>
+      <button class="tag-btn" id="tagFindPricing">Find Price</button>
+      <button class="tag-btn" id="tagSummarize">Summarize</button>
+    </div>
+  </footer>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
+

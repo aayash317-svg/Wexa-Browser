@@ -463,11 +463,18 @@ document.addEventListener("DOMContentLoaded", () => {
     `).join("");
 
     // Reset log
-    outputLog.textContent = `Problem loaded: ${prob.title}\nReady to execute test assertions.\nProgression queued: ${prob.nextUrl || 'Autonomous selection'}`;
+    if (prob.page_type && prob.page_type !== "coding_practice") {
+      outputLog.textContent = `Web resource loaded: ${prob.title}\nURL: ${prob.url}\nPage Type: ${(prob.page_type || 'general web').toUpperCase()}\nUniversal action loop initialized. Ready to plan and act.`;
+      aiCalloutText.innerHTML = `I inspected <strong>"${prob.title}"</strong> (${(prob.page_type || 'web page').toUpperCase()}). Click <strong>Plan Next Step</strong> in the Action Loop below.`;
+      deckProbName.innerHTML = `<span>■</span> Resource: ${prob.title.replace(/^\\d+\\.\\s*/, '')}`;
+    } else {
+      outputLog.textContent = `Problem loaded: ${prob.title}\nReady to execute test assertions.\nProgression queued: ${prob.nextUrl || 'Autonomous selection'}`;
+      aiCalloutText.innerHTML = `I inspected <strong>"${prob.title}"</strong>. Would you like me to prepare an optimal solution and verified patch?`;
+      deckProbName.innerHTML = `<span>■</span> Question: ${prob.title.replace(/^\\d+\\.\\s*/, '')}`;
+    }
 
     // 5. AI Panel Details
     aiProblemText.innerHTML = `Problem: <strong>${prob.title.replace(/^\\d+\\.\\s*/, '')}</strong>`;
-    aiCalloutText.innerHTML = `I inspected <strong>"${prob.title}"</strong>. Would you like me to prepare an optimal solution and verified patch?`;
     diffCard.style.display = "none";
     setPermissionState("REQUIRED");
 
@@ -622,9 +629,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (e) {
       console.warn("Execute action error:", e);
-      await handleGenerateSolution();
-      handleInsertCode();
-      await handleRunTests();
+      if (state.activeLoopAction && state.activeLoopAction.action_type === "solve_code") {
+        await handleGenerateSolution();
+        handleInsertCode();
+        await handleRunTests();
+      } else {
+        showToast("Action simulated and completed.");
+      }
       updateLoopPhase(4);
     }
   }
@@ -639,27 +650,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let matchedKey = null;
     const lower = input.toLowerCase();
 
-    // Match keywords or exact keys
-    if (lower.includes("parenthes")) matchedKey = "valid-parentheses";
-    else if (lower.includes("reverse") && lower.includes("linked")) matchedKey = "reverse-linked-list";
-    else if (lower.includes("palindrome")) matchedKey = "palindrome-number";
-    else if (lower.includes("stairs") || lower.includes("climb")) matchedKey = "climbing-stairs";
-    else if (lower.includes("binary") && lower.includes("search")) matchedKey = "binary-search";
-    else if (lower.includes("maximum") && lower.includes("sub")) matchedKey = "maximum-subarray";
-    else if (lower.includes("hackerrank") || lower.includes("arrays-ds")) matchedKey = "hackerrank-arrays";
-    else if (lower.includes("two-sum") || lower.includes("two sum")) matchedKey = "two-sum";
-    else {
-      const keys = Object.keys(PROBLEMS_DB);
-      matchedKey = keys.find(k => lower.includes(k));
-    }
+    // Check if input is a URL or domain address
+    const isUrl = input.startsWith("http://") || 
+                  input.startsWith("https://") || 
+                  input.startsWith("file://") || 
+                  input.includes("://") || 
+                  input.includes("/") || 
+                  /\.[a-z]{2,}(?::\d+)?/i.test(input) || 
+                  input.startsWith("localhost");
 
-    // Dynamic Backend URL Resolution for different or random web pages
-    if (!matchedKey && (input.startsWith("http") || input.includes("/"))) {
+    if (isUrl) {
+      // 1. Dynamic Backend URL Resolution for any URL across articles, shopping, docs, coding
+      const targetUrl = (input.startsWith("http://") || input.startsWith("https://")) ? input : `https://${input}`;
       try {
         const resp = await fetch(`${BACKEND_URL}/api/resolve-page`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url: input.startsWith("http") ? input : `https://${input}` })
+          body: JSON.stringify({ url: targetUrl })
         });
         if (resp.ok) {
           const resolved = await resp.json();
@@ -668,6 +675,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (err) {
         console.warn("Backend resolver fallback, continuing client-side:", err);
+      }
+    } else {
+      // 2. Keyword query matching only when typing short search queries into the address bar
+      if (lower.includes("parenthes")) matchedKey = "valid-parentheses";
+      else if (lower.includes("reverse") && lower.includes("linked")) matchedKey = "reverse-linked-list";
+      else if (lower.includes("palindrome")) matchedKey = "palindrome-number";
+      else if (lower.includes("stairs") || lower.includes("climb")) matchedKey = "climbing-stairs";
+      else if (lower.includes("binary") && lower.includes("search")) matchedKey = "binary-search";
+      else if (lower.includes("maximum") && lower.includes("sub")) matchedKey = "maximum-subarray";
+      else if (lower.includes("hackerrank") || lower.includes("arrays-ds")) matchedKey = "hackerrank-arrays";
+      else if (lower.includes("two-sum") || lower.includes("two sum")) matchedKey = "two-sum";
+      else {
+        const keys = Object.keys(PROBLEMS_DB);
+        matchedKey = keys.find(k => lower.includes(k));
       }
     }
 

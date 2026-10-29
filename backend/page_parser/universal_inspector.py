@@ -34,7 +34,7 @@ class UniversalPageInspector:
             headings.append(title)
 
         # 2. Detect Page Type
-        page_type = cls._classify_page_type(url, domain, clean_text, starter_code)
+        page_type = cls._classify_page_type(url, domain, clean_text, starter_code, title=title)
 
         # 3. Detect Barriers (CAPTCHA, Login, Paywall, Anti-Automation)
         barriers = cls._detect_barriers(clean_text)
@@ -70,30 +70,50 @@ class UniversalPageInspector:
         )
 
     @classmethod
-    def _classify_page_type(cls, url: str, domain: str, text: str, starter_code: Optional[str]) -> PageType:
+    def _classify_page_type(cls, url: str, domain: str, text: str, starter_code: Optional[str], title: str = "") -> PageType:
         lower_url = url.lower()
         lower_text = text.lower()
 
-        if starter_code or any(k in lower_url for k in ["leetcode", "hackerrank", "codeforces", "/problems/", "/challenges/"]):
-            return PageType.CODING_PRACTICE
-        if any(k in lower_text for k in ["given an array", "return indices", "time complexity", "class solution:"]):
-            return PageType.CODING_PRACTICE
-
-        if any(k in lower_url for k in ["docs.", "doc.", "/docs", "developer.mozilla", "api-reference", "manual"]):
+        # 1. Check title prefixes if provided
+        lower_title = (title or "").lower()
+        if lower_title.startswith("doc:") or "documentation" in lower_title:
             return PageType.DOCUMENTATION
-        if any(k in lower_text for k in ["parameters:", "returns:", "api reference", "usage example", "installation"]):
-            return PageType.DOCUMENTATION
-
-        if any(k in lower_url for k in ["store", "shop", "cart", "product", "checkout", "amazon", "ebay", "item"]):
+        if lower_title.startswith("shop:") or "e-commerce" in lower_title:
             return PageType.E_COMMERCE
-        if any(k in lower_text for k in ["add to cart", "buy now", "in stock", "price:", "$", "shipping"]):
+        if lower_title.startswith("article:") or "publication" in lower_title:
+            return PageType.ARTICLE
+        if lower_title.startswith("practice:"):
+            return PageType.CODING_PRACTICE
+
+        # 2. Strong URL domain & path signatures
+        if any(k in lower_url for k in ["leetcode", "hackerrank", "codeforces", "/problems/", "/challenges/"]):
+            return PageType.CODING_PRACTICE
+
+        if any(k in lower_url for k in ["docs.", "doc.", "/docs", "developer.mozilla", "api-reference", "manual", "tutorial", "reference", "react.dev", "guide"]):
+            return PageType.DOCUMENTATION
+
+        if any(k in lower_url for k in ["store", "shop", "cart", "product", "checkout", "amazon", "ebay", "item", "dp/"]):
             return PageType.E_COMMERCE
 
         if any(k in lower_url for k in ["login", "signup", "register", "checkout/step", "form", "survey"]):
             return PageType.FORM_WORKFLOW
 
-        if any(k in lower_url for k in ["wiki", "blog", "medium.com", "dev.to", "article", "news"]):
+        if any(k in lower_url for k in ["wiki", "blog", "medium.com", "dev.to", "article", "news", "techcrunch", "hackernews", "ycombinator"]):
             return PageType.ARTICLE
+
+        # 2. Strong content signatures
+        if any(k in lower_text for k in ["given an array", "return indices", "time complexity", "class solution:"]):
+            return PageType.CODING_PRACTICE
+
+        if any(k in lower_text for k in ["add to cart", "buy now", "in stock", "price:", "$", "shipping"]):
+            return PageType.E_COMMERCE
+
+        if any(k in lower_text for k in ["parameters:", "returns:", "api reference", "usage example", "installation"]):
+            return PageType.DOCUMENTATION
+
+        # 3. Explicit coding challenge starter code signatures (not generic scratchpad)
+        if starter_code and any(k in starter_code for k in ["class Solution", "def twoSum", "def isValid", "def isPalindrome", "def climbStairs"]):
+            return PageType.CODING_PRACTICE
 
         return PageType.GENERAL_WEB
 
