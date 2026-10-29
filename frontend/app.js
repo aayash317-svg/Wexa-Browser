@@ -216,7 +216,9 @@ const state = {
   permissionState: "REQUIRED", // REQUIRED | ALLOWED | DENIED
   activeProposal: null,
   activeProposalId: null,
-  autoProceed: false
+  autoProceed: false,
+  currentObservation: null,
+  activeLoopAction: null
 };
 
 // ============================================================================
@@ -278,6 +280,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnProceedNext = document.getElementById("btnProceedNext");
   const btnAutoProceedToggle = document.getElementById("btnAutoProceedToggle");
   const autoProceedState = document.getElementById("autoProceedState");
+
+  // Action Loop Elements
+  const phaseObserve = document.getElementById("phaseObserve");
+  const phasePlan = document.getElementById("phasePlan");
+  const phaseAct = document.getElementById("phaseAct");
+  const phaseVerify = document.getElementById("phaseVerify");
+  const loopPageType = document.getElementById("loopPageType");
+  const loopElemCount = document.getElementById("loopElemCount");
+  const loopBarriersRow = document.getElementById("loopBarriersRow");
+  const loopBarriersText = document.getElementById("loopBarriersText");
+  const loopActionType = document.getElementById("loopActionType");
+  const loopConsequentialWarning = document.getElementById("loopConsequentialWarning");
+  const loopActionExplanation = document.getElementById("loopActionExplanation");
+  const btnPlanNextAction = document.getElementById("btnPlanNextAction");
+  const btnPlanSpinner = document.getElementById("btnPlanSpinner");
+  const btnPlanText = document.getElementById("btnPlanText");
+  const btnExecuteAction = document.getElementById("btnExecuteAction");
 
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendBtn");
@@ -462,6 +481,152 @@ document.addEventListener("DOMContentLoaded", () => {
     // 6. Bottom Deck
     deckProbName.innerHTML = `<span>■</span> Question: ${prob.title.replace(/^\\d+\\.\\s*/, '')}`;
     deckLang.innerHTML = `<span>■</span> Editor: Python 3`;
+
+    // 7. Trigger Universal Action Loop Inspection (Observe Step)
+    handleActionLoopInspect(prob);
+  }
+
+  // ==========================================================================
+  // Universal Action Loop (Observe -> Plan -> Act -> Verify)
+  // ==========================================================================
+  function updateLoopPhase(phaseNumber) {
+    [phaseObserve, phasePlan, phaseAct, phaseVerify].forEach((el, idx) => {
+      if (el) el.classList.toggle("active", idx === (phaseNumber - 1));
+    });
+  }
+
+  async function handleActionLoopInspect(prob) {
+    updateLoopPhase(1);
+    if (btnExecuteAction) btnExecuteAction.style.display = "none";
+    if (loopConsequentialWarning) loopConsequentialWarning.style.display = "none";
+
+    try {
+      const resp = await fetch(`${BACKEND_URL}/api/action-loop/inspect`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: prob.url,
+          title: prob.title,
+          visible_text: prob.body ? prob.body.replace(/<[^>]+>/g, '') : '',
+          starter_code: prob.starterCode || ''
+        })
+      });
+
+      if (resp.ok) {
+        const obs = await resp.json();
+        state.currentObservation = obs;
+        if (loopPageType) loopPageType.innerText = (obs.page_type || "general_web").toUpperCase();
+        if (loopElemCount) loopElemCount.innerText = `${obs.interactive_elements.length} controls found`;
+        if (loopBarriersRow && loopBarriersText) {
+          if (obs.barriers && obs.barriers.length > 0) {
+            loopBarriersRow.style.display = "flex";
+            loopBarriersText.innerText = obs.barriers.join(", ");
+          } else {
+            loopBarriersRow.style.display = "none";
+          }
+        }
+        if (loopActionExplanation) {
+          loopActionExplanation.innerHTML = `Page inspected. Click <strong>Plan Next Step</strong> for Wexa's model to determine the next action.`;
+        }
+      }
+    } catch (e) {
+      console.warn("Using offline client observation:", e);
+      if (loopPageType) loopPageType.innerText = (prob.category || "PRACTICE").split('•')[0].trim().toUpperCase();
+      if (loopElemCount) loopElemCount.innerText = "Editor & test harness active";
+    }
+  }
+
+  async function handleActionLoopPlan() {
+    updateLoopPhase(2);
+    if (btnPlanSpinner) btnPlanSpinner.style.display = "inline-block";
+    if (btnPlanText) btnPlanText.innerText = "Reasoning...";
+
+    const activeTab = getActiveTab();
+    const prob = getProblem(activeTab.problemKey);
+    const userGoal = chatInput ? chatInput.value.trim() : "";
+
+    try {
+      const resp = await fetch(`${BACKEND_URL}/api/action-loop/plan`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: prob.url,
+          title: prob.title,
+          visible_text: prob.body ? prob.body.replace(/<[^>]+>/g, '') : '',
+          starter_code: codeEditor ? codeEditor.value : '',
+          user_goal: userGoal || null
+        })
+      });
+
+      if (resp.ok) {
+        const plan = await resp.json();
+        state.activeLoopAction = plan;
+        if (loopActionType) loopActionType.innerText = plan.action_type.toUpperCase();
+        if (loopActionExplanation) loopActionExplanation.innerHTML = plan.explanation;
+
+        if (loopConsequentialWarning) {
+          loopConsequentialWarning.style.display = plan.is_consequential ? "inline-block" : "none";
+        }
+        if (btnExecuteAction) {
+          btnExecuteAction.style.display = "inline-flex";
+          const labelSpan = btnExecuteAction.querySelector("span");
+          if (labelSpan) labelSpan.innerText = plan.is_consequential ? "Authorize & Execute" : "Execute Action";
+        }
+        updateLoopPhase(3);
+        showToast(`Plan ready: ${plan.action_type.toUpperCase()}`);
+      }
+    } catch (e) {
+      console.warn("Action loop plan error:", e);
+      if (loopActionExplanation) loopActionExplanation.innerText = "Synthesize solution and verify in execution sandbox.";
+      if (btnExecuteAction) btnExecuteAction.style.display = "inline-flex";
+      updateLoopPhase(3);
+    } finally {
+      if (btnPlanSpinner) btnPlanSpinner.style.display = "none";
+      if (btnPlanText) btnPlanText.innerText = "Plan Next Step";
+    }
+  }
+
+  async function handleActionLoopExecute() {
+    if (!state.activeLoopAction || !state.currentObservation) {
+      showToast("Please plan next step first.");
+      return;
+    }
+
+    try {
+      const resp = await fetch(`${BACKEND_URL}/api/action-loop/execute`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: state.activeLoopAction,
+          observation: state.currentObservation,
+          user_approved: true
+        })
+      });
+
+      if (resp.ok) {
+        const result = await resp.json();
+        updateLoopPhase(4);
+
+        if (result.action_type === "solve_code") {
+          await handleGenerateSolution();
+          handleInsertCode();
+          await handleRunTests();
+        } else if (result.new_url) {
+          await navigateToUrl(result.new_url);
+        }
+
+        if (loopActionExplanation) {
+          loopActionExplanation.innerHTML = `✓ <strong>Action Verified:</strong> ${result.message}`;
+        }
+        showToast("Action executed and verified!");
+      }
+    } catch (e) {
+      console.warn("Execute action error:", e);
+      await handleGenerateSolution();
+      handleInsertCode();
+      await handleRunTests();
+      updateLoopPhase(4);
+    }
   }
 
   // ==========================================================================
@@ -963,6 +1128,10 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast(state.autoProceed ? "Auto-proceed activated: Will advance to next page on pass." : "Auto-proceed deactivated.");
     });
   }
+
+  // Action Loop Button Listeners
+  if (btnPlanNextAction) btnPlanNextAction.addEventListener("click", handleActionLoopPlan);
+  if (btnExecuteAction) btnExecuteAction.addEventListener("click", handleActionLoopExecute);
 
   // Chat bar
   sendBtn.addEventListener("click", () => {

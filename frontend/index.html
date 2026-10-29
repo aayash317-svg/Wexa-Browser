@@ -279,6 +279,54 @@
           </div>
         </div>
 
+        <!-- Universal 5-Step Action Loop Card -->
+        <div class="ai-card action-loop-card" id="actionLoopCard">
+          <div class="card-caption">ACTION LOOP (OBSERVE → PLAN → ACT → VERIFY)</div>
+          
+          <div class="loop-phases-bar">
+            <span class="loop-phase-step active" id="phaseObserve">1. Inspect</span>
+            <span class="loop-phase-step" id="phasePlan">2. Reason</span>
+            <span class="loop-phase-step" id="phaseAct">3. Action</span>
+            <span class="loop-phase-step" id="phaseVerify">4. Verify</span>
+          </div>
+
+          <div class="loop-section" id="loopObsSection">
+            <div class="loop-row">
+              <span class="loop-label">PAGE TYPE:</span>
+              <span class="mono-badge outline" id="loopPageType">CODING_PRACTICE</span>
+            </div>
+            <div class="loop-row">
+              <span class="loop-label">ELEMENTS:</span>
+              <span id="loopElemCount">Interactive controls detected</span>
+            </div>
+            <div class="loop-row" id="loopBarriersRow" style="display:none;">
+              <span class="loop-label">BARRIER:</span>
+              <span class="barrier-tag" id="loopBarriersText">None</span>
+            </div>
+          </div>
+
+          <div class="loop-proposal-box" id="loopProposalBox">
+            <div class="proposal-header">
+              <span class="mono-badge solid" id="loopActionType">PROPOSED ACTION</span>
+              <span class="consequential-warning" id="loopConsequentialWarning" style="display:none;">⚠️ Approval Required</span>
+            </div>
+            <p class="proposal-explanation" id="loopActionExplanation">
+              Ready to reason. Click <strong>Plan Next Action</strong> for Wexa's model to determine the next step.
+            </p>
+          </div>
+
+          <div class="action-buttons">
+            <button class="primary-btn" id="btnPlanNextAction">
+              <span class="btn-spinner" id="btnPlanSpinner" style="display:none;"></span>
+              <span id="btnPlanText">Plan Next Step</span>
+            </button>
+            <button class="secondary-btn" id="btnExecuteAction" style="display:none;">
+              <span>Execute Action</span>
+              <span class="btn-arrow">➔</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Solution & Diff Card -->
         <div class="ai-card diff-card" id="diffCard" style="display:none;">
           <div class="diff-header">

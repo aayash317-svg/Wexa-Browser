@@ -8,6 +8,8 @@ from backend.config import settings
 from backend.schemas.task import PageAnalysisRequest
 from backend.agent.orchestrator import WexaAgentOrchestrator
 from backend.page_parser.page_resolver import PageResolver
+from backend.agent.action_loop import UniversalActionLoop
+from backend.schemas.universal_action import ProposedAction, PageObservation
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -25,6 +27,7 @@ app.add_middleware(
 )
 
 orchestrator = WexaAgentOrchestrator()
+action_loop = UniversalActionLoop()
 
 
 class ApprovalRequest(BaseModel):
@@ -48,6 +51,29 @@ class NextStepAnalysisRequest(BaseModel):
     user_goal: Optional[str] = None
 
 
+class ActionLoopInspectRequest(BaseModel):
+    url: str
+    title: Optional[str] = ""
+    visible_text: Optional[str] = ""
+    dom_elements: Optional[list] = None
+    starter_code: Optional[str] = None
+
+
+class ActionLoopPlanRequest(BaseModel):
+    url: str
+    title: Optional[str] = ""
+    visible_text: Optional[str] = ""
+    dom_elements: Optional[list] = None
+    starter_code: Optional[str] = None
+    user_goal: Optional[str] = None
+
+
+class ActionLoopExecuteRequest(BaseModel):
+    action: Dict[str, Any]
+    observation: Dict[str, Any]
+    user_approved: bool = False
+
+
 @app.get("/health")
 def health_check():
     return {
@@ -57,6 +83,47 @@ def health_check():
         "model_file": str(orchestrator.engine.model_path),
         "agent_state": orchestrator.state_machine.current_state.value
     }
+
+
+@app.post("/api/action-loop/inspect")
+def action_loop_inspect(payload: ActionLoopInspectRequest):
+    """
+    Step 2: Inspect page and return comprehensive DOM & element observation.
+    """
+    return action_loop.step_inspect(
+        url=payload.url,
+        title=payload.title or "",
+        visible_text=payload.visible_text or "",
+        dom_elements=payload.dom_elements,
+        starter_code=payload.starter_code
+    )
+
+
+@app.post("/api/action-loop/plan")
+def action_loop_plan(payload: ActionLoopPlanRequest):
+    """
+    Step 3: Wexa's own model reasons on the page observation and proposes the next action.
+    """
+    action_loop.step_inspect(
+        url=payload.url,
+        title=payload.title or "",
+        visible_text=payload.visible_text or "",
+        dom_elements=payload.dom_elements,
+        starter_code=payload.starter_code
+    )
+    return action_loop.step_reason_and_plan(user_goal=payload.user_goal)
+
+
+@app.post("/api/action-loop/execute")
+def action_loop_execute(payload: ActionLoopExecuteRequest):
+    """
+    Step 5: Execute proposed action and verify updated state.
+    """
+    act = ProposedAction(**payload.action)
+    obs = PageObservation(**payload.observation)
+    action_loop.current_observation = obs
+    action_loop.active_proposal = act
+    return action_loop.step_execute_and_verify(user_approved=payload.user_approved)
 
 
 @app.post("/api/resolve-page")

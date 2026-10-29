@@ -29,6 +29,7 @@ models/*.gguf
 models/*_checkpoint/
 models/*_final/
 data/automated_interactions.jsonl
+data/datasets/wexa_coder_finetune.jsonl
 
 # Node / Frontend
 node_modules/
