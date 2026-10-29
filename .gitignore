@@ -27,6 +27,8 @@ ENV/
 # Models & Large Datasets (Keep manifests and samples, exclude giant checkpoints)
 models/*.gguf
 models/*_checkpoint/
+models/*_final/
+data/automated_interactions.jsonl
 
 # Node / Frontend
 node_modules/

@@ -21,7 +21,7 @@ class TextareaAdapter:
             proposal_lines,
             fromfile="current_editor",
             tofile="proposed_solution",
-            lineterm=""
+            lineterm="\n"
         )
         unified_diff_str = "".join(diff)
 

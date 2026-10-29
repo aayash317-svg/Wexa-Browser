@@ -94,6 +94,19 @@ def get_dataset_statistics():
     return orchestrator.dataset_logger.get_statistics()
 
 
+@app.get("/api/datasets/manifest")
+def get_datasets_manifest():
+    """
+    Returns the manifest for all 10 installed training and benchmark datasets.
+    """
+    manifest_path = settings.DATASETS_DIR / "manifest.json"
+    if manifest_path.exists():
+        import json
+        with open(manifest_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"total_datasets": 0, "datasets": []}
+
+
 @app.post("/api/datasets/export")
 def export_dataset(min_status: str = "PASS"):
     """

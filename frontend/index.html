@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wexa Browser — AI-Powered Practice Browser</title>
+  <title>Wexa Browser — Minimalist AI Coding Browser</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,46 +11,71 @@
 </head>
 <body class="wexa-app">
 
-  <!-- Top Titlebar / Window Controls -->
+  <!-- Top Titlebar / Window Controls (Strict Monochrome) -->
   <header class="titlebar">
     <div class="window-controls">
-      <span class="dot red"></span>
-      <span class="dot yellow"></span>
-      <span class="dot green"></span>
+      <button class="win-circle-btn" title="Close">✕</button>
+      <button class="win-circle-btn" title="Minimize">—</button>
+      <button class="win-circle-btn" title="Maximize">▢</button>
     </div>
-    <div class="tab-strip">
-      <div class="tab active">
-        <span class="tab-icon">W</span>
-        <span class="tab-title">WEXA — Two Sum</span>
-        <span class="tab-close">×</span>
-      </div>
-      <button class="new-tab-btn">+</button>
+    
+    <div class="tab-strip" id="tabStrip">
+      <!-- Tabs generated dynamically by app.js -->
+      <button class="new-tab-btn" id="newTabBtn" title="New Tab">+</button>
     </div>
+
     <div class="window-actions">
-      <button class="win-btn">—</button>
-      <button class="win-btn">▢</button>
-      <button class="win-btn win-close">✕</button>
+      <span class="engine-indicator">● LOCAL ENGINE</span>
     </div>
   </header>
 
   <!-- Browser Navigation Bar -->
   <nav class="browser-nav">
     <div class="nav-buttons">
-      <button class="nav-btn" title="Back">←</button>
-      <button class="nav-btn" title="Forward">→</button>
+      <button class="nav-btn" id="navBackBtn" title="Back">←</button>
+      <button class="nav-btn" id="navForwardBtn" title="Forward">→</button>
       <button class="nav-btn" id="reloadBtn" title="Refresh">↻</button>
     </div>
+
+    <!-- Smart URL & Search Bar -->
     <div class="url-bar-container">
-      <span class="lock-icon">🔒</span>
-      <input type="text" id="urlInput" class="url-input" value="https://leetcode.com/problems/two-sum/" placeholder="Enter practice URL (e.g. https://leetcode.com/problems/valid-parentheses/)">
-      <button class="nav-go-btn" id="navGoBtn" title="Navigate">➔</button>
-      <button class="star-btn" title="Bookmark">★</button>
-      <button class="share-btn" title="Share">⎘</button>
+      <span class="lock-icon" title="Secure Local Practice Environment">🔒</span>
+      <input 
+        type="text" 
+        id="urlInput" 
+        class="url-input" 
+        value="https://leetcode.com/problems/two-sum/" 
+        placeholder="Enter URL or search practice challenge (e.g. valid-parentheses, reverse-linked-list)..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button class="url-clear-btn" id="urlClearBtn" title="Clear URL">✕</button>
+      <button class="nav-search-btn" id="navGoBtn" title="Search / Navigate">
+        <span>Go</span>
+        <span class="btn-arrow">➔</span>
+      </button>
     </div>
-    <div class="profile-badge">
-      <div class="w-avatar">W</div>
+
+    <!-- Quick Actions: Presets & Custom URL Upload -->
+    <div class="nav-aux-actions">
+      <button class="aux-btn" id="btnPresetsMenu" title="Quick Load Coding Challenge">
+        <span class="aux-icon">⚡</span>
+        <span>Presets</span>
+      </button>
+      <button class="aux-btn primary" id="btnUploadModal" title="Upload Custom URL / Problem">
+        <span class="aux-icon">+</span>
+        <span>Upload URL</span>
+      </button>
+      <button class="aux-icon-btn" id="btnToggleAi" title="Toggle AI Assistant">
+        <span>AI</span>
+      </button>
     </div>
   </nav>
+
+  <!-- Animated Top Page Loading Bar -->
+  <div class="page-loading-bar-container">
+    <div class="page-loading-bar" id="pageLoadingBar"></div>
+  </div>
 
   <!-- Main Viewport (Sidebar + Web Content + AI Panel) -->
   <main class="main-viewport">
@@ -59,145 +84,142 @@
     <aside class="sidebar">
       <div class="brand">
         <div class="brand-logo">W</div>
-        <span class="brand-text">WEXA</span>
+        <div class="brand-meta">
+          <span class="brand-text">WEXA</span>
+          <span class="brand-sub">BROWSER</span>
+        </div>
       </div>
 
       <ul class="nav-menu">
-        <li class="nav-item">
-          <span class="icon">⌂</span>
-          <span class="label">Home</span>
-        </li>
-        <li class="nav-item active">
-          <span class="icon">🌐</span>
+        <li class="nav-item active" id="navItemBrowser">
+          <span class="icon">⌖</span>
           <span class="label">Browser</span>
         </li>
-        <li class="nav-item">
-          <span class="icon">✨</span>
+        <li class="nav-item" id="navDatasets">
+          <span class="icon">🗄</span>
+          <span class="label">Datasets (10)</span>
+        </li>
+        <li class="nav-item" id="navItemAiPanel">
+          <span class="icon">⚡</span>
           <span class="label">AI Assistant</span>
         </li>
-        <li class="nav-item">
-          <span class="icon">📥</span>
-          <span class="label">Downloads</span>
+        <li class="nav-item" id="navItemHistory">
+          <span class="icon">⏱</span>
+          <span class="label">History</span>
         </li>
-        <li class="nav-item" id="navDatasets">
-          <span class="icon">🗄️</span>
-          <span class="label">Datasets</span>
-        </li>
-        <li class="nav-item">
-          <span class="icon">⚙️</span>
+        <li class="nav-item" id="navSettings">
+          <span class="icon">⚙</span>
           <span class="label">Settings</span>
         </li>
       </ul>
 
       <div class="sidebar-footer">
         <div class="offline-badge">
-          <span class="status-indicator"></span>
+          <div class="offline-dot"></div>
           <div class="offline-text">
-            <strong>Offline Mode</strong>
-            <span>Model running locally<br>No internet required</span>
+            <strong>OFFLINE MODE</strong>
+            <span>100% Local Inference</span>
           </div>
         </div>
-        <div class="version-tag">Wexa Browser v1.0.0</div>
+        <div class="version-tag">Wexa v1.0.0 • B&amp;W Edition</div>
       </div>
     </aside>
 
     <!-- Center Workspace / Webpage & Code Editor -->
-    <section class="workspace">
+    <section class="workspace" id="workspace">
+
+      <!-- Loading Overlay (Shown during page loads) -->
+      <div class="workspace-loading-overlay" id="workspaceLoadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-label" id="loadingLabel">Loading webpage...</div>
+      </div>
+
       <!-- Problem Details Pane -->
-      <div class="problem-pane">
+      <div class="problem-pane" id="problemPane">
         <div class="problem-header">
           <div class="title-row">
-            <h2>1. Two Sum</h2>
-            <span class="badge medium">Medium</span>
-            <div class="stats">
-              <span>👍 122K</span>
-              <span>💬 5.4K</span>
+            <h2 id="probTitle">1. Two Sum</h2>
+            <div class="badges-row">
+              <span class="mono-badge outline" id="probDifficulty">MEDIUM</span>
+              <span class="mono-badge solid">PRACTICE</span>
+              <span class="mono-badge muted">ACCEPTED</span>
             </div>
           </div>
-          <button class="companies-btn">🏢 Companies</button>
         </div>
 
-        <div class="problem-body">
-          <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to <code>target</code>.</p>
-          <p>You may assume that each input would have <strong>exactly one solution</strong>, and you may not use the same element twice.</p>
-          <p>You can return the answer in any order.</p>
-
-          <div class="example-card">
-            <strong>Example 1:</strong>
-            <pre><code>Input: nums = [2,7,11,15], target = 9
-Output: [0,1]
-Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].</code></pre>
-          </div>
-
-          <div class="example-card">
-            <strong>Example 2:</strong>
-            <pre><code>Input: nums = [3,2,4], target = 6
-Output: [1,2]</code></pre>
-          </div>
+        <div class="problem-body" id="probBody">
+          <!-- Populated by JavaScript -->
         </div>
       </div>
 
-      <!-- Live Code Editor Pane -->
+      <!-- Code Editor Pane -->
       <div class="editor-pane">
         <div class="editor-header">
-          <select id="langSelect" class="lang-select">
-            <option value="python">Python3</option>
-            <option value="java">Java</option>
-            <option value="cpp">C++</option>
-          </select>
+          <div class="editor-header-left">
+            <span class="editor-tag">EDITOR</span>
+            <select id="langSelect" class="lang-select">
+              <option value="python">Python 3</option>
+              <option value="javascript">JavaScript</option>
+              <option value="java">Java</option>
+              <option value="cpp">C++</option>
+            </select>
+          </div>
+          
           <div class="editor-actions">
-            <button class="run-btn" id="editorRunBtn">▶ Run</button>
-            <button class="submit-btn" id="editorSubmitBtn">☁ Submit</button>
+            <button class="action-btn secondary" id="editorResetBtn" title="Reset to starter code">Reset</button>
+            <button class="action-btn secondary" id="editorRunBtn" title="Run code (Ctrl+Enter)">
+              <span>▶ Run</span>
+            </button>
+            <button class="action-btn primary" id="editorSubmitBtn" title="Submit solution">
+              <span>Submit ➔</span>
+            </button>
           </div>
         </div>
 
         <div class="editor-container">
-          <div class="line-numbers" id="lineNumbers">
-            1<br>2<br>3<br>4<br>5<br>6<br>7<br>8
-          </div>
-          <textarea id="codeEditor" class="code-textarea" spellcheck="false">class Solution:
-    def twoSum(self, nums: list[int], target: int) -> list[int]:
-        # Write your code here
-        pass</textarea>
+          <div class="line-numbers" id="lineNumbers">1</div>
+          <textarea 
+            id="codeEditor" 
+            class="code-textarea" 
+            spellcheck="false" 
+            autocomplete="off" 
+            autocorrect="off" 
+            autocapitalize="off"
+          ></textarea>
         </div>
 
         <!-- Testcases Section -->
         <div class="testcases-tray">
           <div class="testcases-header">
             <div class="test-tabs">
-              <button class="test-tab active">Testcase</button>
-              <button class="test-tab">Result</button>
+              <button class="test-tab active" id="tabTestcases">Testcases</button>
+              <button class="test-tab" id="tabResults">Execution Log</button>
             </div>
-            <button class="run-all-btn" id="runAllTestsBtn">Run All</button>
+            <button class="run-all-btn" id="runAllTestsBtn">
+              <span>Run All Tests</span>
+            </button>
           </div>
 
-          <div class="testcases-list">
-            <div class="testcase-item" id="tc1">
-              <span class="tc-status pending">○</span>
-              <span>Test Case 1: nums = [2,7,11,15], target = 9</span>
-            </div>
-            <div class="testcase-item" id="tc2">
-              <span class="tc-status pending">○</span>
-              <span>Test Case 2: nums = [3,2,4], target = 6</span>
-            </div>
-            <div class="testcase-item" id="tc3">
-              <span class="tc-status pending">○</span>
-              <span>Test Case 3: nums = [3,3], target = 6</span>
-            </div>
+          <div class="testcases-list" id="testcasesList">
+            <!-- Test cases populated by JavaScript -->
+          </div>
+
+          <div class="execution-output" id="executionOutput" style="display: none;">
+            <pre id="outputLog">Awaiting test execution...</pre>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Right AI Assistant Side Panel -->
-    <aside class="ai-panel">
+    <aside class="ai-panel" id="aiPanel">
       <div class="ai-header">
         <div class="ai-title">
-          <span class="sparkle">✨</span>
-          <strong>AI Assistant</strong>
-          <span class="badge beta">Beta</span>
+          <span class="sparkle">⚡</span>
+          <strong>AI ASSISTANT</strong>
+          <span class="mono-badge solid">OFFLINE</span>
         </div>
-        <button class="close-panel-btn">✕</button>
+        <button class="close-panel-btn" id="closeAiPanelBtn" title="Hide AI Panel">✕</button>
       </div>
 
       <div class="ai-content" id="aiFeed">
@@ -208,98 +230,102 @@ Output: [1,2]</code></pre>
 
         <!-- Analysis Checklist Card -->
         <div class="ai-card" id="analysisCard">
+          <div class="card-caption">DETECTION STATUS</div>
           <ul class="status-checklist">
             <li class="checked">
-              <span class="check-icon">✓</span>
-              <span>Page Analysis Complete</span>
+              <span class="check-box">■</span>
+              <span>Page Analysis: <strong>Complete</strong></span>
             </li>
             <li class="checked">
-              <span class="check-icon">✓</span>
-              <span>Problem: <strong>Two Sum</strong></span>
+              <span class="check-box">■</span>
+              <span id="aiProblemText">Problem: <strong>Two Sum</strong></span>
             </li>
             <li class="checked">
-              <span class="check-icon">✓</span>
-              <span>Language: <strong>Python</strong></span>
+              <span class="check-box">■</span>
+              <span id="aiLanguageText">Language: <strong>Python</strong></span>
             </li>
             <li class="checked">
-              <span class="check-icon">✓</span>
-              <span>Editor: <strong>Textarea / Monaco</strong></span>
+              <span class="check-box">■</span>
+              <span>Editor: <strong>Active Textarea / Monaco</strong></span>
             </li>
             <li class="checked">
-              <span class="check-icon">✓</span>
-              <span>Target: <strong>Complete missing code</strong></span>
+              <span class="check-box">■</span>
+              <span>Target: <strong>Complete Missing Code</strong></span>
             </li>
             <li class="checked notice">
-              <span class="check-icon">✓</span>
-              <span>Permission: <strong>Required</strong></span>
+              <span class="check-box">■</span>
+              <span>Permission: <strong id="aiPermStatusText">Required Before Edit</strong></span>
             </li>
           </ul>
 
           <div class="callout-box">
-            <span class="info-icon">ℹ</span>
-            <p id="aiCalloutText">I found the coding question on this page. Would you like me to generate the solution and write it in the editor?</p>
+            <p id="aiCalloutText">Ready to inspect question. Click <strong>Generate Solution</strong> to prepare verified code using the embedded model.</p>
           </div>
 
           <div class="action-buttons">
             <button class="primary-btn" id="generateSolutionBtn">
-              <span class="spinner" id="btnSpinner" style="display:none;">◌</span>
-              Generate Solution
+              <span class="btn-spinner" id="btnSpinner" style="display:none;"></span>
+              <span id="genBtnText">Generate Solution</span>
             </button>
-            <button class="secondary-btn" id="viewDetailsBtn">View Details</button>
+            <button class="secondary-btn" id="viewDetailsBtn">Review Diff</button>
           </div>
         </div>
 
-        <!-- Diff Card (Hidden initially, shown after generation) -->
+        <!-- Solution & Diff Card -->
         <div class="ai-card diff-card" id="diffCard" style="display:none;">
           <div class="diff-header">
-            <strong>Proposed Code Solution</strong>
-            <span class="badge diff-badge">Review Diff</span>
+            <strong>PROPOSED SOLUTION DIFF</strong>
+            <button class="copy-diff-btn" id="copyDiffBtn" title="Copy code">Copy Code</button>
           </div>
           <pre class="diff-viewer" id="diffViewer"></pre>
+          <div class="diff-actions">
+            <button class="primary-btn small" id="diffApplyBtn">Apply to Editor</button>
+            <button class="secondary-btn small" id="diffDiscardBtn">Dismiss</button>
+          </div>
         </div>
       </div>
 
       <!-- Bottom Chat Bar & Quick Action Pills -->
       <div class="ai-footer">
         <div class="chat-input-bar">
-          <input type="text" id="chatInput" placeholder="Ask me anything...">
-          <button class="send-btn" id="sendBtn">➤</button>
+          <input type="text" id="chatInput" placeholder="Ask Wexa AI anything..." autocomplete="off">
+          <button class="send-btn" id="sendBtn" title="Send">➔</button>
         </div>
         <div class="quick-pills">
-          <button class="pill-btn" id="pillAnalyse">⚡ Analyse Page</button>
-          <button class="pill-btn" id="pillInsert">⎘ Insert Code</button>
-          <button class="pill-btn" id="pillTests">▶ Run Tests</button>
+          <button class="pill-btn" id="pillAnalyse">Analyse Page</button>
+          <button class="pill-btn" id="pillInsert">Insert Code</button>
+          <button class="pill-btn" id="pillTests">Run Tests</button>
         </div>
       </div>
     </aside>
 
   </main>
 
-  <!-- Bottom Control Deck -->
+  <!-- Bottom Control Deck (Minimalist Black & White) -->
   <footer class="bottom-deck">
     <!-- Card 1: Page Analysis -->
     <div class="deck-card">
       <div class="card-header">
-        <span class="icon">📊</span>
-        <strong>Page Analysis</strong>
-        <span class="badge success" id="badgeAnalysisStatus">Done</span>
+        <span class="card-num">01</span>
+        <strong>Page Understanding</strong>
+        <span class="mono-badge outline" id="badgeAnalysisStatus">ACTIVE</span>
       </div>
       <ul class="card-list">
-        <li><span class="bullet green">✓</span> Page type: Coding Platform</li>
-        <li><span class="bullet green">✓</span> Coding question: Detected</li>
-        <li><span class="bullet green">✓</span> Code editor: Found (Python)</li>
-        <li><span class="bullet green">✓</span> Action status: Ready</li>
+        <li><span>■</span> Type: Coding Platform</li>
+        <li id="deckProbName"><span>■</span> Question: Two Sum</li>
+        <li id="deckLang"><span>■</span> Editor: Python 3</li>
+        <li><span>■</span> Target: Incomplete Method</li>
       </ul>
     </div>
 
     <!-- Card 2: Permission Control -->
     <div class="deck-card">
       <div class="card-header">
-        <span class="icon">🛡️</span>
-        <strong>Permission Control</strong>
-        <span class="badge success" id="badgePermStatus">Allowed</span>
+        <span class="card-num">02</span>
+        <strong>Permission Guard</strong>
+        <span class="mono-badge solid" id="badgePermStatus">REQUIRED</span>
       </div>
-      <p class="perm-desc" id="permDesc">You can now allow Wexa to edit the code editor.</p>
+      <p class="perm-desc" id="permDesc">Explicit approval required before modifying editor code.</p>
       <div class="perm-actions">
         <button class="perm-btn allow" id="btnAllow">Allow</button>
         <button class="perm-btn deny" id="btnDeny">Deny</button>
@@ -307,32 +333,164 @@ Output: [1,2]</code></pre>
       </div>
     </div>
 
-    <!-- Card 3: Quick Actions -->
+    <!-- Card 3: Quick Commands -->
     <div class="deck-card">
       <div class="card-header">
-        <span class="icon">⚡</span>
-        <strong>Quick Actions</strong>
+        <span class="card-num">03</span>
+        <strong>Quick Commands</strong>
       </div>
       <div class="action-links">
         <button class="action-link" id="linkAnalyse">Analyse Current Page <span>›</span></button>
-        <button class="action-link" id="linkFindQuestions">Find Coding Questions <span>›</span></button>
-        <button class="action-link" id="linkDatasets">Open Dataset Manager <span>›</span></button>
-        <button class="action-link" id="linkSettings">Settings <span>›</span></button>
+        <button class="action-link" id="linkLoadPresets">Open Challenge Presets <span>›</span></button>
+        <button class="action-link" id="linkDatasets">Dataset Inspector (10) <span>›</span></button>
+        <button class="action-link" id="linkRunHarness">Execute Test Harness <span>›</span></button>
       </div>
     </div>
 
-    <!-- Card 4: Brand Card -->
+    <!-- Card 4: Wexa Brand / System Status -->
     <div class="deck-card brand-card">
       <div class="brand-emblem">
         <div class="brand-logo-large">W</div>
         <div class="brand-slogan">
-          <h3>WEXA</h3>
-          <span>BROWSER</span>
+          <h3>WEXA BROWSER</h3>
+          <span>LOCAL-FIRST AGENT</span>
         </div>
       </div>
-      <p class="brand-motto">Build • Learn • Grow</p>
+      <div class="brand-meta-grid">
+        <div class="meta-item">
+          <span class="meta-key">ENGINE:</span>
+          <span class="meta-val">Local GGUF</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-key">NETWORK:</span>
+          <span class="meta-val">Zero Cloud Leak</span>
+        </div>
+      </div>
+      <p class="brand-motto">READ • ANALYSE • CODE • SOLVE</p>
     </div>
   </footer>
+
+  <!-- Modal 1: Challenge Presets Dropdown / Modal -->
+  <div class="modal-backdrop" id="presetsModal" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⚡</span>
+          <strong>SELECT CODING CHALLENGE PRESET</strong>
+        </div>
+        <button class="modal-close-btn" id="closePresetsModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="presets-grid" id="presetsGrid">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Upload URL / Custom Problem Modal -->
+  <div class="modal-backdrop" id="uploadModal" style="display: none;">
+    <div class="modal-box large">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>+</span>
+          <strong>UPLOAD URL OR CUSTOM CODING PROBLEM</strong>
+        </div>
+        <button class="modal-close-btn" id="closeUploadModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>URL or Challenge Source</label>
+          <input type="text" id="customUrlInput" placeholder="https://leetcode.com/problems/your-problem-name/" class="form-input">
+        </div>
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label>Problem Title</label>
+            <input type="text" id="customTitleInput" placeholder="e.g. 9. Palindrome Number" class="form-input">
+          </div>
+          <div class="form-group flex-1">
+            <label>Difficulty</label>
+            <select id="customDiffSelect" class="form-input">
+              <option value="Easy">Easy</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Problem Description</label>
+          <textarea id="customDescInput" rows="3" placeholder="Describe the problem, input format, and output..." class="form-input"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Starter Code</label>
+          <textarea id="customStarterInput" rows="4" placeholder="class Solution:&#10;    def solve(self, n):&#10;        pass" class="form-input code-font"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button class="secondary-btn" id="cancelUploadBtn">Cancel</button>
+          <button class="primary-btn" id="submitUploadBtn">Load Into Browser ➔</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Dataset Inspector (All 10 Datasets) -->
+  <div class="modal-backdrop" id="datasetsModal" style="display: none;">
+    <div class="modal-box large">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>🗄</span>
+          <strong>INSTALLED DATASETS &amp; TRAINING MANIFEST (10 TOTAL)</strong>
+        </div>
+        <button class="modal-close-btn" id="closeDatasetsModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="datasets-summary-bar">
+          <div class="summary-stat">
+            <span class="stat-num">10</span>
+            <span class="stat-label">Datasets Installed</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-num">65.70 MB</span>
+            <span class="stat-label">Total Size on Disk</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Verified Passing</span>
+          </div>
+          <div class="summary-stat">
+            <span class="stat-num">Offline</span>
+            <span class="stat-label">Local Storage</span>
+          </div>
+        </div>
+
+        <div class="datasets-table-container">
+          <table class="mono-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Dataset Name</th>
+                <th>Focus / Scope</th>
+                <th>Size</th>
+                <th>Format</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="datasetsTableBody">
+              <!-- Populated by JavaScript from manifest -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-footer">
+          <span class="footer-note">Path: D:\Wexa Browser\data\datasets\</span>
+          <button class="primary-btn" id="btnExportTelemetry">Export Fine-tuning JSONL</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
 
   <script src="app.js"></script>
 </body>
