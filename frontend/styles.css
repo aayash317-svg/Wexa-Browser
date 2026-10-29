@@ -1178,6 +1178,19 @@ body.wexa-app {
   border-color: var(--text-white);
 }
 
+.next-page-card {
+  border: 1px solid var(--text-white);
+  background: var(--bg-deep);
+  animation: fadeIn 0.25s ease;
+}
+
+.next-page-card p {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
 .diff-header {
   display: flex;
   align-items: center;

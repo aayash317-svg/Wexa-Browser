@@ -7,6 +7,7 @@ from pathlib import Path
 from backend.config import settings
 from backend.schemas.task import PageAnalysisRequest
 from backend.agent.orchestrator import WexaAgentOrchestrator
+from backend.page_parser.page_resolver import PageResolver
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -37,6 +38,16 @@ class VerifyTestRequest(BaseModel):
     test_harness_code: Optional[str] = None
 
 
+class ResolvePageRequest(BaseModel):
+    url: str
+
+
+class NextStepAnalysisRequest(BaseModel):
+    url: str
+    visible_text: Optional[str] = ""
+    user_goal: Optional[str] = None
+
+
 @app.get("/health")
 def health_check():
     return {
@@ -45,6 +56,39 @@ def health_check():
         "engine_ready": orchestrator.engine.is_ready,
         "model_file": str(orchestrator.engine.model_path),
         "agent_state": orchestrator.state_machine.current_state.value
+    }
+
+
+@app.post("/api/resolve-page")
+def resolve_page(payload: ResolvePageRequest):
+    """
+    Dynamically resolves any URL into a structured practice problem page.
+    """
+    return PageResolver.resolve_url(payload.url)
+
+
+@app.get("/api/random-page")
+def get_random_page(exclude_id: Optional[str] = None):
+    """
+    Selects a random web practice page and automatically sets up progression.
+    """
+    return PageResolver.get_random_page(exclude_slug=exclude_id)
+
+
+@app.post("/api/analyze-page-next-step")
+def analyze_page_next_step(payload: NextStepAnalysisRequest):
+    """
+    Analyzes current page state, identifies page type and next-step actions,
+    and returns next action reasoning and progression URLs.
+    """
+    resolved = PageResolver.resolve_url(payload.url)
+    return {
+        "url": payload.url,
+        "page_type": resolved.get("page_type", "general_web"),
+        "title": resolved.get("title", ""),
+        "next_step": resolved.get("nextAction", {}),
+        "next_url": resolved.get("nextUrl", ""),
+        "user_goal": payload.user_goal or "Complete primary page workflow"
     }
 
 
@@ -121,6 +165,14 @@ def export_dataset(min_status: str = "PASS"):
         "exported_records": count,
         "export_path": str(export_path)
     }
+
+
+from fastapi.staticfiles import StaticFiles
+
+# Mount static frontend for browser UI
+frontend_dir = Path(__file__).resolve().parent.parent / "frontend"
+if frontend_dir.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_dir), html=True), name="frontend")
 
 
 if __name__ == "__main__":

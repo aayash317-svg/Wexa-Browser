@@ -1,18 +1,38 @@
-# Wexa Browser — UI & Interface Specification
+# Wexa Browser — Implement the Approved UI Design
 
-![WEXA AI Browser Interface Mockup](./WEXA%20AI%20Browser%20Interface%20Mockup.png)
+## Objective
+Implement the existing Wexa Browser frontend to closely match the approved dark-premium UI mockup.
 
-## 1. Overview & Brand Identity
+## 1. Overview & Brand Identity (Black + White Edition)
 
-**Wexa Browser** features an integrated, high-contrast, modern dark cyberpunk/developer UI (`#070D1B`, `#0B132B`, `#111C38`) with electric neon blue (`#1E6FFF`) and cyan/glow (`#38BDF8`) accents.
+**Wexa Browser** features an integrated, high-contrast, strictly monochromatic black-and-white minimalist developer interface (`#000000`, `#080808`, `#121212`, `#1e1e1e`, `#ffffff`). Zero colors are used—ensuring a pure, distraction-free architectural aesthetic.
 
-- **Brand Statement**: "Your AI-Powered Browser: Read • Analyse • Code • Solve."
-- **Tagline**: "SMARTER BROWSING. FASTER SOLUTIONS."
-- **Motto**: "Build • Learn • Grow"
+- **Design Philosophy**: Pure Black + White High-Contrast Architectural UI.
+### 3. Logo
+Create a consistent WEXA brand identity:
+- Geometric W symbol.
+- Electric-blue outline or accent.
+- WEXA wordmark.
+- Browser sub-label.
+- Reuse the same branding throughout the application.
 
----
+### 4. Functional requirements
+- Analyse Page must call the existing page-analysis functionality when available.
+- Datasets must use the existing dataset pipeline.
+- Permission controls must require approval before editing webpage content.
+- Code editor and testing actions must connect to existing backend APIs where supported.
+- Offline status must reflect the actual model state, not a hardcoded success indicator.
+- Add loading, success, empty, and error states.
+- Keep the interface responsive.
 
-## 2. Layout & Viewport Breakdown
+### 5. Strict project-preservation rules
+1. Inspect the existing repository before changing files.
+2. Preserve the current backend, API contracts, dataset downloads, and training pipeline.
+3. Do not replace working functionality with mock data.
+4. Do not integrate Qwen, Llama, or any other existing local model.
+5. Do not claim that code execution or tests succeeded unless verified.
+6. Implement the frontend in small stages and report changed files and test results.
+7. If an API is not ready, create a clear integration boundary rather than inventing its behaviour.
 
 ```
 +---------------------------------------------------------------------------------------------------------+
@@ -104,19 +124,20 @@
 
 ---
 
-## 4. Design Tokens & Color Palette
+## 4. Design Tokens & Color Palette (Strictly Black & White)
 
 | Token | Hex / Value | Description |
 | :--- | :--- | :--- |
-| `--bg-darkest` | `#070D1B` | Window frame, main application background |
-| `--bg-surface` | `#0B132B` | Navigation sidebar, titlebar, bottom deck |
-| `--bg-card` | `#111C38` | AI Assistant panel, card containers |
-| `--border-color` | `#1C2A4A` | Structural borders, splitters, dividers |
-| `--primary-blue` | `#1E6FFF` | Primary action buttons, active navigation item |
-| `--accent-glow` | `#38BDF8` | Brand glow, status checkmarks, active badges |
-| `--success-green` | `#10B981` | Passing tests, allowed permissions, success tags |
-| `--warning-yellow`| `#F59E0B` | Medium difficulty badge, review notices |
-| `--text-primary` | `#F8FAFC` | Main headings, code text, active labels |
-| `--text-secondary`| `#94A3B8` | Descriptions, problem body, muted subtitles |
+| `--bg-pure-black` | `#000000` | Window frame, code editor, deepest canvas |
+| `--bg-deep` | `#080808` | Secondary navigation, problem pane background |
+| `--bg-surface` | `#0F0F0F` | Headers, active cards, tab background |
+| `--bg-elevated` | `#161616` | Active states, hover surfaces, inputs |
+| `--border-subtle` | `#262626` | Structural borders, splitters, dividers |
+| `--border-medium` | `#363636` | Card borders, interactive element strokes |
+| `--border-bright` | `#FFFFFF` | Focus rings, active tab indicators, modals |
+| `--text-white` | `#FFFFFF` | Primary headers, active buttons, code keywords |
+| `--text-primary` | `#EDEDED` | Problem descriptions, editor text |
+| `--text-secondary`| `#9E9E9E` | Muted subtitles, labels, secondary metadata |
+| `--text-muted` | `#616161` | Inactive icons, line numbers |
 | `--font-sans` | `Inter`, sans-serif | General UI typography |
 | `--font-mono` | `JetBrains Mono`, monospace | Code editor, diff viewer, testcase logs |

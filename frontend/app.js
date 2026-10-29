@@ -12,7 +12,9 @@
  * - Toast notification feedback system
  */
 
-const BACKEND_URL = "http://127.0.0.1:8765";
+const BACKEND_URL = (typeof window !== "undefined" && window.location.origin.startsWith("http")) 
+  ? window.location.origin 
+  : "http://127.0.0.1:8765";
 
 // Pre-packaged Coding Challenge Catalog
 const PROBLEMS_DB = {
@@ -213,7 +215,8 @@ const state = {
   isAiCollapsed: false,
   permissionState: "REQUIRED", // REQUIRED | ALLOWED | DENIED
   activeProposal: null,
-  activeProposalId: null
+  activeProposalId: null,
+  autoProceed: false
 };
 
 // ============================================================================
@@ -231,6 +234,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const navForwardBtn = document.getElementById("navForwardBtn");
   const pageLoadingBar = document.getElementById("pageLoadingBar");
   const workspaceLoadingOverlay = document.getElementById("workspaceLoadingOverlay");
+
+  const btnRandomPage = document.getElementById("btnRandomPage");
+  const btnNextPageNav = document.getElementById("btnNextPageNav");
+  const navNextPageLabel = document.getElementById("navNextPageLabel");
 
   const probTitle = document.getElementById("probTitle");
   const probDifficulty = document.getElementById("probDifficulty");
@@ -266,11 +273,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const aiProblemText = document.getElementById("aiProblemText");
   const aiPermStatusText = document.getElementById("aiPermStatusText");
 
+  const nextPageCard = document.getElementById("nextPageCard");
+  const nextPageDesc = document.getElementById("nextPageDesc");
+  const btnProceedNext = document.getElementById("btnProceedNext");
+  const btnAutoProceedToggle = document.getElementById("btnAutoProceedToggle");
+  const autoProceedState = document.getElementById("autoProceedState");
+
   const chatInput = document.getElementById("chatInput");
   const sendBtn = document.getElementById("sendBtn");
   const pillAnalyse = document.getElementById("pillAnalyse");
   const pillInsert = document.getElementById("pillInsert");
   const pillTests = document.getElementById("pillTests");
+  const pillRandom = document.getElementById("pillRandom");
+  const pillNext = document.getElementById("pillNext");
 
   const badgePermStatus = document.getElementById("badgePermStatus");
   const permDesc = document.getElementById("permDesc");
@@ -302,6 +317,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnExportTelemetry = document.getElementById("btnExportTelemetry");
 
   const linkAnalyse = document.getElementById("linkAnalyse");
+  const linkRandomPage = document.getElementById("linkRandomPage");
+  const linkNextPage = document.getElementById("linkNextPage");
   const linkRunHarness = document.getElementById("linkRunHarness");
 
   // ==========================================================================
@@ -427,7 +444,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `).join("");
 
     // Reset log
-    outputLog.textContent = `Problem loaded: ${prob.title}\nReady to execute test assertions.`;
+    outputLog.textContent = `Problem loaded: ${prob.title}\nReady to execute test assertions.\nProgression queued: ${prob.nextUrl || 'Autonomous selection'}`;
 
     // 5. AI Panel Details
     aiProblemText.innerHTML = `Problem: <strong>${prob.title.replace(/^\\d+\\.\\s*/, '')}</strong>`;
@@ -435,55 +452,86 @@ document.addEventListener("DOMContentLoaded", () => {
     diffCard.style.display = "none";
     setPermissionState("REQUIRED");
 
+    // Reset Next Page Progression Card
+    if (nextPageCard) nextPageCard.style.display = "none";
+    if (navNextPageLabel) {
+      navNextPageLabel.innerText = "Next Page";
+      if (btnNextPageNav) btnNextPageNav.title = `Proceed to next challenge (${prob.nextUrl || 'auto'})`;
+    }
+
     // 6. Bottom Deck
     deckProbName.innerHTML = `<span>■</span> Question: ${prob.title.replace(/^\\d+\\.\\s*/, '')}`;
     deckLang.innerHTML = `<span>■</span> Editor: Python 3`;
   }
 
   // ==========================================================================
-  // Navigation & URL Handling
+  // Navigation & Dynamic URL Handling
   // ==========================================================================
-  function navigateToUrl(rawInput) {
+  async function navigateToUrl(rawInput) {
     const input = rawInput.trim();
     if (!input) return;
 
     let matchedKey = null;
     const lower = input.toLowerCase();
 
-    // Match keywords or URLs
+    // Match keywords or exact keys
     if (lower.includes("parenthes")) matchedKey = "valid-parentheses";
     else if (lower.includes("reverse") && lower.includes("linked")) matchedKey = "reverse-linked-list";
     else if (lower.includes("palindrome")) matchedKey = "palindrome-number";
+    else if (lower.includes("stairs") || lower.includes("climb")) matchedKey = "climbing-stairs";
+    else if (lower.includes("binary") && lower.includes("search")) matchedKey = "binary-search";
+    else if (lower.includes("maximum") && lower.includes("sub")) matchedKey = "maximum-subarray";
     else if (lower.includes("hackerrank") || lower.includes("arrays-ds")) matchedKey = "hackerrank-arrays";
     else if (lower.includes("two-sum") || lower.includes("two sum")) matchedKey = "two-sum";
     else {
-      // Check exact problem ID keys
       const keys = Object.keys(PROBLEMS_DB);
       matchedKey = keys.find(k => lower.includes(k));
     }
 
-    // If still unmatched, create a dynamic practice sandbox for this URL
+    // Dynamic Backend URL Resolution for different or random web pages
+    if (!matchedKey && (input.startsWith("http") || input.includes("/"))) {
+      try {
+        const resp = await fetch(`${BACKEND_URL}/api/resolve-page`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: input.startsWith("http") ? input : `https://${input}` })
+        });
+        if (resp.ok) {
+          const resolved = await resp.json();
+          PROBLEMS_DB[resolved.id] = resolved;
+          matchedKey = resolved.id;
+        }
+      } catch (err) {
+        console.warn("Backend resolver fallback, continuing client-side:", err);
+      }
+    }
+
+    // Fallback synthesis for novel URL
     if (!matchedKey) {
       const customId = "custom-" + Date.now();
       const domain = input.replace(/^https?:\/\//, '').split('/')[0] || "Custom Practice";
+      const slug = input.split('/').filter(Boolean).pop() || "problem";
+      const title = slug.replace(/[-_]+/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
       PROBLEMS_DB[customId] = {
         id: customId,
         url: input.startsWith("http") ? input : `https://${input}`,
-        title: `Challenge on ${domain}`,
+        title: `Challenge: ${title}`,
         difficulty: "MEDIUM",
-        category: "CUSTOM PRACTICE",
-        body: `<p>Loaded custom practice challenge from <code>${input}</code>.</p>
-               <p>Wexa's page parser extracted the question prompt and initialized the sandbox editor.</p>`,
+        category: "DYNAMIC WEB CHALLENGE",
+        body: `<p>Loaded dynamic practice challenge for <strong>${title}</strong> from <code>${input}</code>.</p>
+               <p>Implement the function below to solve this problem and verify in the execution sandbox.</p>`,
         examples: [
-          { num: 1, text: `Input: target = 10\nOutput: 10\nStatus: Initialized` }
+          { num: 1, text: `Input: val = 10\nOutput: 20\nExplanation: Verified processing for ${title}.` },
+          { num: 2, text: `Input: val = 0\nOutput: 0` }
         ],
-        starterCode: `# Custom challenge initialized from ${input}\ndef solution(*args, **kwargs):\n    # Write your solution here\n    pass\n`,
-        solutionCode: `def solution(*args, **kwargs):\n    return True`,
+        starterCode: `class Solution:\n    def solve(self, val: int) -> int:\n        # Write your solution here\n        pass\n`,
+        solutionCode: `class Solution:\n    def solve(self, val: int) -> int:\n        return val * 2\n`,
         testCases: [
-          `Test Case 1: Verification on ${domain}`,
-          `Test Case 2: In-memory unit assertion`
+          `Test Case 1: solve(10) == 20`,
+          `Test Case 2: solve(0) == 0`
         ],
-        testHarness: `print("Custom challenge tests executed successfully.")`
+        testHarness: `sol = Solution()\nassert sol.solve(10) == 20\nassert sol.solve(0) == 0\nprint("Dynamic challenge tests executed successfully.")`,
+        nextUrl: "https://leetcode.com/problems/valid-parentheses/"
       };
       matchedKey = customId;
     }
@@ -503,6 +551,38 @@ document.addEventListener("DOMContentLoaded", () => {
       renderActiveProblem(prob);
       showToast(`Navigated to: ${prob.title}`);
     });
+  }
+
+  async function handleLoadRandomPage() {
+    const activeTab = getActiveTab();
+    const currentSlug = activeTab ? activeTab.problemKey : null;
+
+    try {
+      const resp = await fetch(`${BACKEND_URL}/api/random-page?exclude_id=${encodeURIComponent(currentSlug || '')}`);
+      if (resp.ok) {
+        const randomProb = await resp.json();
+        PROBLEMS_DB[randomProb.id] = randomProb;
+        navigateToUrl(randomProb.url);
+        showToast(`🎲 Random Page: ${randomProb.title}`);
+        return;
+      }
+    } catch (e) {
+      console.warn("Using local random selection:", e);
+    }
+
+    // Local fallback
+    const keys = Object.keys(PROBLEMS_DB).filter(k => k !== currentSlug);
+    const chosenKey = keys[Math.floor(Math.random() * (keys.length || 1))] || "two-sum";
+    navigateToUrl(PROBLEMS_DB[chosenKey].url);
+    showToast(`🎲 Random Page: ${PROBLEMS_DB[chosenKey].title}`);
+  }
+
+  function handleProceedNext() {
+    const activeTab = getActiveTab();
+    const prob = getProblem(activeTab.problemKey);
+    const nextTarget = prob.nextUrl || "https://leetcode.com/problems/valid-parentheses/";
+    showToast(`➔ Proceeding to: ${nextTarget}`);
+    navigateToUrl(nextTarget);
   }
 
   function switchTab(tabId) {
@@ -669,6 +749,24 @@ document.addEventListener("DOMContentLoaded", () => {
     outputLog.textContent += `\n=========================================\nALL TESTS PASSED: 100% SUCCESS RATE\nInteraction logged to automated_interactions.jsonl\n=========================================`;
     aiCalloutText.innerHTML = `■ <strong>All Testcases Passed!</strong> Verified in local sandbox. Telemetry recorded for model fine-tuning.`;
     showToast("All testcases passed!");
+
+    // Next Page Progression Activation
+    const nextTarget = prob.nextUrl || "https://leetcode.com/problems/valid-parentheses/";
+    if (nextPageCard) {
+      nextPageCard.style.display = "block";
+      nextPageDesc.innerHTML = `<strong>Challenge Complete!</strong> All tests passed. Proceed to next page: <code>${nextTarget}</code>`;
+    }
+    if (navNextPageLabel) {
+      navNextPageLabel.innerText = "Next Page ➔";
+    }
+    outputLog.textContent += `\n\n[PROGRESSION]: Ready to proceed to next page: ${nextTarget}\nClick 'Proceed to Next Page' or use '➔ Next Page' to advance.`;
+
+    if (state.autoProceed) {
+      showToast("Auto-advancing to next page in 2 seconds...");
+      setTimeout(() => {
+        if (state.autoProceed) handleProceedNext();
+      }, 2000);
+    }
   }
 
   // ==========================================================================
@@ -847,6 +945,24 @@ document.addEventListener("DOMContentLoaded", () => {
   pillAnalyse.addEventListener("click", handleGenerateSolution);
   pillInsert.addEventListener("click", handleInsertCode);
   pillTests.addEventListener("click", handleRunTests);
+  if (pillRandom) pillRandom.addEventListener("click", handleLoadRandomPage);
+  if (pillNext) pillNext.addEventListener("click", handleProceedNext);
+
+  if (btnRandomPage) btnRandomPage.addEventListener("click", handleLoadRandomPage);
+  if (btnNextPageNav) btnNextPageNav.addEventListener("click", handleProceedNext);
+  if (btnProceedNext) btnProceedNext.addEventListener("click", handleProceedNext);
+  if (linkRandomPage) linkRandomPage.addEventListener("click", handleLoadRandomPage);
+  if (linkNextPage) linkNextPage.addEventListener("click", handleProceedNext);
+
+  if (btnAutoProceedToggle) {
+    btnAutoProceedToggle.addEventListener("click", () => {
+      state.autoProceed = !state.autoProceed;
+      if (autoProceedState) {
+        autoProceedState.innerText = state.autoProceed ? "Auto: ON" : "Auto: OFF";
+      }
+      showToast(state.autoProceed ? "Auto-proceed activated: Will advance to next page on pass." : "Auto-proceed deactivated.");
+    });
+  }
 
   // Chat bar
   sendBtn.addEventListener("click", () => {

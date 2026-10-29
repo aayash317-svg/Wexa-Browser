@@ -58,6 +58,14 @@
 
     <!-- Quick Actions: Presets & Custom URL Upload -->
     <div class="nav-aux-actions">
+      <button class="aux-btn" id="btnRandomPage" title="Take Random Web Page Automatically">
+        <span class="aux-icon">🎲</span>
+        <span>Random Page</span>
+      </button>
+      <button class="aux-btn" id="btnNextPageNav" title="Proceed to Next Page">
+        <span class="aux-icon">➔</span>
+        <span id="navNextPageLabel">Next Page</span>
+      </button>
       <button class="aux-btn" id="btnPresetsMenu" title="Quick Load Coding Challenge">
         <span class="aux-icon">⚡</span>
         <span>Presets</span>
@@ -283,6 +291,20 @@
             <button class="secondary-btn small" id="diffDiscardBtn">Dismiss</button>
           </div>
         </div>
+        <!-- Next Page Progression Card -->
+        <div class="ai-card next-page-card" id="nextPageCard" style="display:none;">
+          <div class="card-caption">AUTOMATIC PROGRESSION</div>
+          <p id="nextPageDesc">Tests verified! Ready to proceed to the next practice page.</p>
+          <div class="action-buttons">
+            <button class="primary-btn" id="btnProceedNext">
+              <span>Proceed to Next Page</span>
+              <span class="btn-arrow">➔</span>
+            </button>
+            <button class="secondary-btn" id="btnAutoProceedToggle" title="Automatically advance when tests pass">
+              <span id="autoProceedState">Auto: OFF</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Bottom Chat Bar & Quick Action Pills -->
@@ -295,6 +317,8 @@
           <button class="pill-btn" id="pillAnalyse">Analyse Page</button>
           <button class="pill-btn" id="pillInsert">Insert Code</button>
           <button class="pill-btn" id="pillTests">Run Tests</button>
+          <button class="pill-btn" id="pillRandom">🎲 Random</button>
+          <button class="pill-btn" id="pillNext">➔ Next</button>
         </div>
       </div>
     </aside>
@@ -341,6 +365,8 @@
       </div>
       <div class="action-links">
         <button class="action-link" id="linkAnalyse">Analyse Current Page <span>›</span></button>
+        <button class="action-link" id="linkRandomPage">Take Random Web Page <span>🎲</span></button>
+        <button class="action-link" id="linkNextPage">Proceed to Next Page <span>➔</span></button>
         <button class="action-link" id="linkLoadPresets">Open Challenge Presets <span>›</span></button>
         <button class="action-link" id="linkDatasets">Dataset Inspector (10) <span>›</span></button>
         <button class="action-link" id="linkRunHarness">Execute Test Harness <span>›</span></button>
